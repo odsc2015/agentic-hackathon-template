@@ -1,4 +1,4 @@
-const { runAsync, getAsync, allAsync } = require('../config/d');
+const { runAsync, getAsync, allAsync } = require('../config/db');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
