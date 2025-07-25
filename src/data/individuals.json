@@ -1,0 +1,235 @@
+[
+    {
+        "individual_id": "IND001",
+        "contact_name": "Jamie Davies",
+        "contact_email": "jamie.davies22@service.co.uk",
+        "contact_phone": "020 7745 3132",
+        "date_of_birth": "1985-08-01",
+        "gender": "Female",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2025-04-22",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "family_friendly"
+            ],
+            "learning_interests": [
+                "Cybersecurity Awareness"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND002",
+        "contact_name": "Jamie Williams",
+        "contact_email": "jamie.williams61@mail.org",
+        "contact_phone": "020 8205 8016",
+        "date_of_birth": "1994-03-08",
+        "gender": "Non-binary",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2024-07-19",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "family_friendly",
+                "mental_health_support"
+            ],
+            "learning_interests": [
+                "English Language Skills",
+                "Cybersecurity Awareness",
+                "Financial Literacy",
+                "Critical Thinking"
+            ],
+            "past_experiences": [
+                "positive_shelter_experience"
+            ]
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND003",
+        "contact_name": "Alex Davies",
+        "contact_email": "alex.davies14@service.co.uk",
+        "contact_phone": "020 8604 7223",
+        "date_of_birth": "1983-02-18",
+        "gender": "Prefer not to say",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2024-01-19",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "family_friendly",
+                "no_religious_affiliation",
+                "disability_access"
+            ],
+            "learning_interests": [
+                "Microsoft Office Suite",
+                "Cloud Computing Fundamentals"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND004",
+        "contact_name": "Sam Wilson",
+        "contact_email": "sam.wilson78@mail.org",
+        "contact_phone": "020 8019 9313",
+        "date_of_birth": "1979-11-30",
+        "gender": "Male",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2024-05-10",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "women_only",
+                "family_friendly"
+            ],
+            "learning_interests": [
+                "Data Entry",
+                "Mobile App Development (Basic)"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND005",
+        "contact_name": "Jordan Smith",
+        "contact_email": "jordan.smith40@mail.org",
+        "contact_phone": "020 8056 9467",
+        "date_of_birth": "1999-02-16",
+        "gender": "Prefer not to say",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2024-11-19",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "men_only"
+            ],
+            "learning_interests": [
+                "Food Hygiene Certificate",
+                "Time Management",
+                "Project Management Basics",
+                "Data Entry"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND006",
+        "contact_name": "Chris Davies",
+        "contact_email": "chris.davies79@service.co.uk",
+        "contact_phone": "020 7765 1635",
+        "date_of_birth": "1989-07-16",
+        "gender": "Female",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2025-07-14",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "no_religious_affiliation",
+                "quiet_environment",
+                "mental_health_support"
+            ],
+            "learning_interests": [
+                "Financial Literacy"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND007",
+        "contact_name": "Chris Brown",
+        "contact_email": "chris.brown50@service.co.uk",
+        "contact_phone": "020 8471 3666",
+        "date_of_birth": "1981-08-31",
+        "gender": "Male",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2025-11-17",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "men_only",
+                "mental_health_support",
+                "family_friendly"
+            ],
+            "learning_interests": [
+                "Project Management Basics"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND008",
+        "contact_name": "Chris Brown",
+        "contact_email": "chris.brown94@example.com",
+        "contact_phone": "020 7933 9744",
+        "date_of_birth": "1974-08-01",
+        "gender": "Prefer not to say",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2024-05-11",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "men_only",
+                "pet_friendly"
+            ],
+            "learning_interests": [
+                "Public Speaking",
+                "English Language Skills"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND009",
+        "contact_name": "Sam Davies",
+        "contact_email": "sam.davies50@service.co.uk",
+        "contact_phone": "020 7299 3113",
+        "date_of_birth": "1993-11-10",
+        "gender": "Male",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2025-12-03",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "pet_friendly"
+            ],
+            "learning_interests": [
+                "Graphic Design Basics",
+                "Teamwork & Collaboration"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    },
+    {
+        "individual_id": "IND010",
+        "contact_name": "Jordan Evans",
+        "contact_email": "jordan.evans87@mail.org",
+        "contact_phone": "020 7937 2163",
+        "date_of_birth": "1975-12-24",
+        "gender": "Male",
+        "current_address": "Mobile/Temporary (e.g., Library, Day Centre)",
+        "enrollment_date": "2025-09-15",
+        "status": "Active",
+        "preferences": {
+            "shelter_preferences": [
+                "men_only",
+                "disability_access"
+            ],
+            "learning_interests": [
+                "Basic Coding (Python)",
+                "Graphic Design Basics"
+            ],
+            "past_experiences": []
+        },
+        "notes": "User has high digital literacy, seeks skill development."
+    }
+]

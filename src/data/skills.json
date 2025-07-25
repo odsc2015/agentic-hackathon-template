@@ -1,0 +1,152 @@
+[
+    {
+        "skill_id": "SKILL001",
+        "skill_name": "Basic IT Literacy",
+        "skill_category": "IT",
+        "description": "Fundamental computer operation skills for everyday tasks."
+    },
+    {
+        "skill_id": "SKILL002",
+        "skill_name": "Microsoft Office Suite",
+        "skill_category": "IT",
+        "description": "Proficiency in Word, Excel, and PowerPoint for professional use."
+    },
+    {
+        "skill_id": "SKILL003",
+        "skill_name": "Customer Service Excellence",
+        "skill_category": "Soft Skills",
+        "description": "Develop skills to provide outstanding customer support."
+    },
+    {
+        "skill_id": "SKILL004",
+        "skill_name": "Digital Marketing Fundamentals",
+        "skill_category": "Digital Marketing",
+        "description": "Introduction to online marketing strategies and tools."
+    },
+    {
+        "skill_id": "SKILL005",
+        "skill_name": "Web Development (HTML/CSS)",
+        "skill_category": "IT",
+        "description": "Learn to build basic websites using HTML and CSS."
+    },
+    {
+        "skill_id": "SKILL006",
+        "skill_name": "Data Entry",
+        "skill_category": "Other",
+        "description": "Accurate and efficient data input techniques."
+    },
+    {
+        "skill_id": "SKILL007",
+        "skill_name": "English Language Skills",
+        "skill_category": "General",
+        "description": "Improve reading, writing, and conversational English."
+    },
+    {
+        "skill_id": "SKILL008",
+        "skill_name": "CV Writing & Interview Prep",
+        "skill_category": "Soft Skills",
+        "description": "Craft compelling CVs and prepare for job interviews."
+    },
+    {
+        "skill_id": "SKILL009",
+        "skill_name": "Financial Literacy",
+        "skill_category": "Soft Skills",
+        "description": "Understand personal finance, budgeting, and saving."
+    },
+    {
+        "skill_id": "SKILL010",
+        "skill_name": "Health & Safety in Construction",
+        "skill_category": "Vocational",
+        "description": "Essential safety knowledge for construction sites."
+    },
+    {
+        "skill_id": "SKILL011",
+        "skill_name": "Food Hygiene Certificate",
+        "skill_category": "Vocational",
+        "description": "Learn food safety practices for working with food."
+    },
+    {
+        "skill_id": "SKILL012",
+        "skill_name": "Basic Coding (Python)",
+        "skill_category": "IT",
+        "description": "Foundational programming concepts using Python."
+    },
+    {
+        "skill_id": "SKILL013",
+        "skill_name": "Project Management Basics",
+        "skill_category": "Soft Skills",
+        "description": "Introduction to planning and executing projects."
+    },
+    {
+        "skill_id": "SKILL014",
+        "skill_name": "Time Management",
+        "skill_category": "Soft Skills",
+        "description": "Strategies for effective time allocation and productivity."
+    },
+    {
+        "skill_id": "SKILL015",
+        "skill_name": "Communication Skills",
+        "skill_category": "Soft Skills",
+        "description": "Enhance verbal and non-verbal communication."
+    },
+    {
+        "skill_id": "SKILL016",
+        "skill_name": "Critical Thinking",
+        "skill_category": "Soft Skills",
+        "description": "Develop analytical and problem-solving abilities."
+    },
+    {
+        "skill_id": "SKILL017",
+        "skill_name": "Problem Solving",
+        "skill_category": "Soft Skills",
+        "description": "Systematic approaches to identifying and resolving issues."
+    },
+    {
+        "skill_id": "SKILL018",
+        "skill_name": "Teamwork & Collaboration",
+        "skill_category": "Soft Skills",
+        "description": "Skills for effective group work and cooperation."
+    },
+    {
+        "skill_id": "SKILL019",
+        "skill_name": "Social Media Management",
+        "skill_category": "Digital Marketing",
+        "description": "Manage and grow social media presence for businesses."
+    },
+    {
+        "skill_id": "SKILL020",
+        "skill_name": "Graphic Design Basics",
+        "skill_category": "Digital Marketing",
+        "description": "Introduction to visual communication and design tools."
+    },
+    {
+        "skill_id": "SKILL021",
+        "skill_name": "Cybersecurity Awareness",
+        "skill_category": "IT",
+        "description": "Understand common cyber threats and protective measures."
+    },
+    {
+        "skill_id": "SKILL022",
+        "skill_name": "Cloud Computing Fundamentals",
+        "skill_category": "IT",
+        "description": "Basics of cloud services and platforms."
+    },
+    {
+        "skill_id": "SKILL023",
+        "skill_name": "Mobile App Development (Basic)",
+        "skill_category": "IT",
+        "description": "Introduction to creating simple mobile application interfaces."
+    },
+    {
+        "skill_id": "SKILL024",
+        "skill_name": "Networking Basics",
+        "skill_category": "IT",
+        "description": "Building professional connections and leveraging them for career growth."
+    },
+    {
+        "skill_id": "SKILL025",
+        "skill_name": "Public Speaking",
+        "skill_category": "Soft Skills",
+        "description": "Overcome fear and deliver engaging presentations."
+    }
+]
