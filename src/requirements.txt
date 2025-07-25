@@ -1,0 +1,4 @@
+google-generativeai
+aiohttp
+asyncio
+google-adk

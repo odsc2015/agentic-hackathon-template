@@ -3,6 +3,14 @@ import requests
 import json
 from typing import Dict, Any, Optional
 from dotenv import load_dotenv
+import os
+import asyncio
+from google.adk.agents import Agent
+from google.adk.models.lite_llm import LiteLlm # For multi-model support
+from google.adk.sessions import InMemorySessionService
+from google.adk.runners import Runner
+from google.genai import types # For creating message Content/Parts
+
 
 # Load environment variables
 load_dotenv()
@@ -269,10 +277,10 @@ def get_insurance_coverage() -> Dict[str, Any]:
 
 def main():
     # Get the coverage details using hardcoded test data (no user input required)
-    coverage_details = get_insurance_coverage_hardcoded()
+    # coverage_details = get_insurance_coverage_hardcoded()
     
     # To use user input instead, uncomment the line below and comment the one above:
-    # coverage_details = get_insurance_coverage()
+    coverage_details = get_insurance_coverage()
     
     # Print the results as formatted JSON
     print("\nCoverage Details:")
