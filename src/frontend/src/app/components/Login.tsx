@@ -53,7 +53,7 @@ export default function LoginPage() {
               Forgot Password
             </p> */}
             <div className="flex px-4 py-3 justify-center gap-3">
-              <LoginButton color="#009963" />
+              <LoginButton  />
             </div>
           </div>
         </div>
