@@ -2,9 +2,16 @@ import os
 import requests
 import json
 from typing import Dict, Any, Optional
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 API_URL = "https://healthcare.us.stedi.com/2024-04-01/change/medicalnetwork/eligibility/v3"
 AUTHORIZATION_VALUE = os.environ.get("AUTHORIZATION_VALUE")
+
+# Debug: Check if loaded (remove this after testing)
+print(f"Auth value loaded: {'✅ Yes' if AUTHORIZATION_VALUE else '❌ No'}")
 
 headers = {
     "Authorization": AUTHORIZATION_VALUE,
@@ -168,6 +175,56 @@ def parse_coverage_details(api_response: Dict[str, Any]) -> Dict[str, Any]:
     
     return result
 
+def get_insurance_coverage_hardcoded() -> Dict[str, Any]:
+    """
+    Gets insurance coverage details using hardcoded test data for easy testing.
+    No user input required.
+    
+    Returns:
+        A dictionary with coverage details or error information
+    """
+    print("Insurance Coverage Checker (Hardcoded Test Data)")
+    print("================================================")
+    
+    # Hardcoded payload for testing
+    payload = {
+        "controlNumber": "123456789",
+        "tradingPartnerServiceId": "62308",  # Cigna
+        "provider": {
+            "organizationName": "Provider Name",
+            "npi": "1999999984"
+        },
+        "subscriber": {
+            "firstName": "James",
+            "lastName": "Jones",
+            "dateOfBirth": "19910202",
+            "memberId": "23456789100"
+        },
+        "encounter": {
+            "serviceTypeCodes": ["30"]
+        }
+    }
+    
+    print("Using test data:")
+    print(f"  Provider: {payload['provider']['organizationName']}")
+    print(f"  Trading Partner: {payload['tradingPartnerServiceId']} (Cigna)")
+    print(f"  Patient: {payload['subscriber']['firstName']} {payload['subscriber']['lastName']}")
+    print(f"  Member ID: {payload['subscriber']['memberId']}")
+    print("  Making API call...")
+    
+    # Make the API call directly with hardcoded payload
+    try:
+        response = requests.post(API_URL, headers=headers, json=payload)
+        response.raise_for_status()
+        api_response = response.json()
+        
+        print("✅ API call successful!")
+        return parse_coverage_details(api_response)
+        
+    except requests.exceptions.RequestException as e:
+        print(f"❌ API call failed: {str(e)}")
+        return {"error": str(e), "message": "Failed to fetch coverage information"}
+
 def get_insurance_coverage() -> Dict[str, Any]:
     """
     Gets insurance coverage details by taking user input and calling the API.
@@ -211,8 +268,11 @@ def get_insurance_coverage() -> Dict[str, Any]:
     return parse_coverage_details(api_response)
 
 def main():
-    # Get the coverage details
-    coverage_details = get_insurance_coverage()
+    # Get the coverage details using hardcoded test data (no user input required)
+    coverage_details = get_insurance_coverage_hardcoded()
+    
+    # To use user input instead, uncomment the line below and comment the one above:
+    # coverage_details = get_insurance_coverage()
     
     # Print the results as formatted JSON
     print("\nCoverage Details:")
