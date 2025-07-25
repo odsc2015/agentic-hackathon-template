@@ -5,6 +5,8 @@
 
 Below, sketch (ASCII, hand-drawn JPEG/PNG pasted in, or ASCII art) the high-level components of your agent.
 
+PNG ATTACHED AT: images/Katalyst - Agentic Coach Architecture V1.png
+
 ## Components
 
 1. **User Interface**  
