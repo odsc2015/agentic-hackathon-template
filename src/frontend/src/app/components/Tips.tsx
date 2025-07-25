@@ -1,11 +1,10 @@
-// app/support-partner/page.tsx
 'use client';
 
 import React, { useState } from 'react';
 
 const defaultTip = `During this phase, your partner might experience increased sensitivity and emotional fluctuations. Offer extra support and understanding, and be patient with any mood swings. Consider planning relaxing activities together, such as a quiet evening at home or a gentle walk in nature. Avoid stressful situations or conflicts, and communicate openly and calmly.`;
 
-export default function Tip() {
+export default function Tips() {
   const [input, setInput] = useState('');
   const [generatedTip, setGeneratedTip] = useState(defaultTip);
   const [customTip, setCustomTip] = useState('');
