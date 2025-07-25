@@ -2,6 +2,7 @@
 'use client';
 
 import React from 'react';
+import LoginButton from '@/app/components/LoginButton';
 
 export default function LoginPage() {
   return (
@@ -26,7 +27,7 @@ export default function LoginPage() {
             <h2 className="text-[#0c1c17] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
               Welcome to Cyclewise
             </h2>
-            <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+            {/* <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
               <label className="flex flex-col min-w-40 flex-1">
                 <input
                   type="email"
@@ -47,16 +48,12 @@ export default function LoginPage() {
                   readOnly
                 />
               </label>
-            </div>
-            <p className="text-[#46a080] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline">
+            </div> */}
+            {/* <p className="text-[#46a080] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline">
               Forgot Password
-            </p>
-            <div className="flex px-4 py-3">
-              <button
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#019863] text-[#f8fcfa] text-base font-bold leading-normal tracking-[0.015em]"
-              >
-                <span className="truncate">Login</span>
-              </button>
+            </p> */}
+            <div className="flex px-4 py-3 justify-center gap-3">
+              <LoginButton color="#009963" />
             </div>
           </div>
         </div>
