@@ -13,7 +13,7 @@ export default function LoginButton() {
     <div className="flex flex-col items-center justify-center">
       <button
         className={`px-6 py-2 bg-[#009963] text-white rounded hover:cursor-pointer`}
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", {callbackUrl: '/DayOverview'})}
       >
         <FontAwesomeIcon icon={faGoogle} className="mr-2" />
         Sign in with Google
