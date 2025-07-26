@@ -9,3 +9,5 @@ google-cloud-firestore
 google-genai
 pydantic
 python-dotenv
+sentence-transformers
+torch

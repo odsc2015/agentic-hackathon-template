@@ -5,7 +5,7 @@ from google.cloud import firestore
 from google.oauth2 import service_account
 import json
 import time
-from executor import extract_details_from_img, extract_details_from_txt
+from executor import extract_details_from_img, extract_details_from_txt, find_best_candidate
 
 # --- Firestore Connection ---
 
@@ -263,7 +263,6 @@ if db:
 
             if submitted:
                 # --- Logic to handle the submitted data ---
-
                 # Case 1: User uploaded a file
                 if uploaded_file is not None:
                     # Ensure text area is empty to avoid confusion
@@ -280,6 +279,7 @@ if db:
                         extracted_details = extract_details_from_img(image_bytes=image_bytes, mime_type="image/jpeg")
                         st.success("Successfully extracted details from image!")
                         st.json(extracted_details) # Display extracted details
+                        st.json(extracted_details["skills"])
                         
 
                 # Case 2: User pasted text
@@ -293,7 +293,28 @@ if db:
                         st.success("Successfully extracted details from text!")
                         st.json(extracted_details) # Display extracted details
 
+                        st.json(extracted_details["skills"])
 
+                        # 2. Load all your user data (you already do this with load_all_data_cached)
+                        all_users_df = data.get("individuals", pd.DataFrame())
+                        # Convert DataFrame to list of dictionaries for the function
+                        all_users_list = all_users_df.to_dict('records')
+
+                        # 3. Call the function to get the best match
+                        if all_users_list:
+                            best_candidate = find_best_candidate(extracted_details["skills"], all_users_list, extracted_details)
+
+                            if best_candidate:
+                                st.subheader("Top Candidate Recommendation")
+                                # st.success(f"The best match for this job is **{best_candidate['contact_name']}**.")
+                                
+                                # You can display more details about the candidate here
+                                # candidate_skills = best_candidate.get("preferences", {}).get("learning_interests", [])
+                                st.write(best_candidate)
+                            else:
+                                st.warning("Could not find a suitable candidate. No users with relevant skills were found.")
+                        else:
+                            st.info("No users in the database to match against.")
 
                 # Case 3: User submitted the form empty
                 else:
