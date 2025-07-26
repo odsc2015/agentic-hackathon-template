@@ -1,14 +1,10 @@
-import sqlite3
-import os
-from datetime import datetime
-from typing import Optional, List, Dict, Any, Union, Tuple
 import logging
+import sqlite3
+from datetime import datetime, timedelta
+from typing import Optional, List, Dict, Any, Union, Tuple
 from contextlib import contextmanager
-from pydantic import BaseModel, validator
-from dataclasses import dataclass
-import logging.config
 
-# Configure logging
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -21,18 +17,11 @@ class DatabaseHandler:
     """SQLite database handler for managing events and reminders."""
     
     def __init__(self, db_path: str = "events.db"):
-        """
-        Initialize the database handler.
-        
-        Args:
-            db_path: Path to the SQLite database file
-        """
         self.db_path = db_path
         self._connection = None
         self.init_database()
     
     def init_database(self):
-        """Initialize the database and create tables if they don't exist."""
         try:
             with self.get_connection() as conn:
                 cursor = conn.cursor()
@@ -51,8 +40,7 @@ class DatabaseHandler:
                         creation_dt DATETIME DEFAULT CURRENT_TIMESTAMP
                     )
                 ''')
-                
-                # Create index for faster queries on user_id and reminder times
+
                 cursor.execute('''
                     CREATE INDEX IF NOT EXISTS idx_user_id 
                     ON Events(user_id)
@@ -130,23 +118,12 @@ class DatabaseHandler:
             raise
     
     def get_event(self, event_id: int) -> Union[Dict[str, Any], None]:
-        """
-        Retrieve an event by its ID.
-        
-        Args:
-            event_id: The ID of the event to retrieve
-            
-        Returns:
-            Dictionary containing event data or None if not found
-        """
         try:
             with self.get_connection() as conn:
                 conn.row_factory = sqlite3.Row
                 cursor = conn.cursor()
                 
-                cursor.execute('''
-                    SELECT * FROM Events WHERE event_id = ?
-                ''', (event_id,))
+                cursor.execute('''SELECT * FROM Events WHERE event_id = ?''', (event_id,))
                 
                 row = cursor.fetchone()
                 if row:
@@ -158,15 +135,6 @@ class DatabaseHandler:
             raise DatabaseError(f"Failed to get event {event_id}: {e}")
     
     def get_user_events(self, user_id: str) -> List[Dict[str, Any]]:
-        """
-        Retrieve all events for a specific user.
-        
-        Args:
-            user_id: The ID of the user
-            
-        Returns:
-            List of dictionaries containing event data
-        """
         try:
             with self.get_connection() as conn:
                 conn.row_factory = sqlite3.Row
@@ -185,15 +153,6 @@ class DatabaseHandler:
             raise
     
     def get_due_reminders(self, current_time: datetime) -> List[Dict[str, Any]]:
-        """
-        Get all reminders that are due at or before the current time.
-        
-        Args:
-            current_time: Current datetime to check against
-            
-        Returns:
-            List of dictionaries containing event data for due reminders
-        """
         try:
             with self.get_connection() as conn:
                 conn.row_factory = sqlite3.Row
@@ -214,15 +173,6 @@ class DatabaseHandler:
             raise
     
     def get_due_reminders_with_status(self, current_time: datetime) -> List[Dict[str, Any]]:
-        """
-        Get reminders that are due based on status and time.
-        
-        Args:
-            current_time: Current datetime to check against
-            
-        Returns:
-            List of dictionaries containing event data for due reminders
-        """
         try:
             with self.get_connection() as conn:
                 conn.row_factory = sqlite3.Row
@@ -243,24 +193,13 @@ class DatabaseHandler:
             raise
     
     def update_event(self, event_id: int, **kwargs) -> bool:
-        """
-        Update an existing event.
-        
-        Args:
-            event_id: The ID of the event to update
-            **kwargs: Fields to update (user_id, source_chat_id, event_summary, 
-                     event_dt, reminder_1_dt, reminder_2_dt)
-            
-        Returns:
-            True if update was successful, False otherwise
-        """
         try:
             with self.get_connection() as conn:
                 cursor = conn.cursor()
-                
-                # Build dynamic update query
-                valid_fields = ['user_id', 'source_chat_id', 'event_summary', 
-                              'event_dt', 'reminder_1_dt', 'reminder_2_dt', 'status']
+                valid_fields = [
+                    'user_id', 'source_chat_id', 'event_summary', 'event_dt', 'reminder_1_dt',
+                    'reminder_2_dt', 'status'
+                ]
                 update_fields = []
                 values = []
                 
@@ -291,15 +230,6 @@ class DatabaseHandler:
             raise
     
     def delete_event(self, event_id: int) -> bool:
-        """
-        Delete an event from the database.
-        
-        Args:
-            event_id: The ID of the event to delete
-            
-        Returns:
-            True if deletion was successful, False otherwise
-        """
         try:
             with self.get_connection() as conn:
                 cursor = conn.cursor()
@@ -319,12 +249,6 @@ class DatabaseHandler:
             raise
     
     def get_database_stats(self) -> Dict[str, Any]:
-        """
-        Get database statistics.
-        
-        Returns:
-            Dictionary containing database statistics
-        """
         try:
             with self.get_connection() as conn:
                 cursor = conn.cursor()
@@ -350,14 +274,10 @@ class DatabaseHandler:
             raise
 
 
-# Example usage and testing
 if __name__ == "__main__":
-    # Initialize database
     db = DatabaseHandler()
     
     # Example: Add a test event
-    from datetime import datetime, timedelta
-    
     now = datetime.now()
     event_time = now + timedelta(hours=2)
     reminder_1 = now + timedelta(minutes=30)
@@ -371,10 +291,8 @@ if __name__ == "__main__":
         reminder_1_dt=reminder_1,
         reminder_2_dt=reminder_2
     )
-    
     print(f"Created event with ID: {event_id}")
-    
-    # Get database stats
+
     stats = db.get_database_stats()
     print(f"Database stats: {stats}")
 
