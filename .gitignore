@@ -31,3 +31,5 @@ Thumbs.db
 *.secret
 # Ignore service account keys
 agent/secrets/gcp-account-service.json
+agent/secrets/gcp-account-service.json
+agent/secrets/gcp-account-service.json
