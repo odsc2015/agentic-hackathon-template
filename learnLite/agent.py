@@ -136,9 +136,10 @@ evaluation_agent = LlmAgent(
     name="QuizEvaluator",
     model=MODEL_NAME,
     instruction=(
-        "Compare each user answer in state['user_answers'] to the correct answers in state['actual_answers'] for each question within state['questions']. "
-        "For each, provide correctness and a brief review. "
-        "Summarize the total score in state['score'] and provide a review in state['review']."
+        """Compare each user answer in state['user_answers'] to the correct answers in state['actual_answers'] for each question within state['questions']. 
+        For each, show the question, user's response, correct response, correctness and a brief review. 
+        Summarize the total score in state['score'] and provide a review in state['review'].
+        """
     ),
     output_key="evaluation_output",
     output_schema=EvaluationOutput  # Define a suitable schema for the evaluation output
