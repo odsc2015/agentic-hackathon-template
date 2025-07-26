@@ -13,16 +13,17 @@ struct ContentView: View {
     var body: some View {
         Group {
             if authViewModel.isAuthenticated {
-                HomeView()
-                    .environmentObject(authViewModel)
+                if authViewModel.isOnboardingComplete {
+                    HomeView()
+                        .environmentObject(authViewModel)
+                } else {
+                    OnboardingView()
+                        .environmentObject(authViewModel)
+                }
             } else {
                 LoginView()
                     .environmentObject(authViewModel)
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
 }
