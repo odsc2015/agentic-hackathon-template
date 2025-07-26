@@ -207,6 +207,7 @@ async def search_hospitals(insurance_data: InsuranceData):
     try:
         # Convert Pydantic model to dict
         insurance_dict = insurance_data.dict()
+        print(f"Received insurance data: {insurance_dict}")
         
         # Validate insurance first
         validation_result = check_insurance_validity(insurance_dict)
@@ -249,6 +250,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=port,
-        log_level="info",
-        reload=True  # Enable auto-reload during development
+        log_level="info"
     )
