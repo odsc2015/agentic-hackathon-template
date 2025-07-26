@@ -30,4 +30,4 @@ Thumbs.db
 .env.*
 *.secret
 # Ignore service account keys
-/katalyst/secrets/*.json
+agent/secrets/gcp-account-service.json
