@@ -13,7 +13,7 @@ class MemoryManager:
         )
         self.conn.commit()
         # Initialize a Gemini client here as well for convenience (so executor can use memory.gemini_client)
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key ="AIzaSyCmTlPLaTfbJJzHmBzgf1m361wo8MUgO3s"
         if api_key is None:
             raise RuntimeError("Gemini API key not set in environment.")
         self.gemini_client = genai.Client(api_key=api_key)

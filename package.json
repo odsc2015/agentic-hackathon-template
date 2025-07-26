@@ -1,5 +1,26 @@
 {
     "scripts": {
-      "init-db": "bash scripts/init-db.sh"
+        "init-db": "bash scripts/init-db.sh"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.1",
+        "@mui/icons-material": "^7.2.0",
+        "@mui/material": "^7.2.0",
+        "@react-three/drei": "^10.6.1",
+        "@react-three/fiber": "^9.2.0",
+        "@react-three/postprocessing": "^3.0.4",
+        "axios": "^1.11.0",
+        "bcrypt": "^6.0.0",
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.1",
+        "express": "^5.1.0",
+        "framer-motion": "^12.23.9",
+        "jsonwebtoken": "^9.0.2",
+        "react-hot-toast": "^2.5.2",
+        "react-router-dom": "^7.7.1",
+        "sqlite3": "^5.1.7",
+        "three": "^0.178.0",
+        "zustand": "^5.0.6"
     }
 }

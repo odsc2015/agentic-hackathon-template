@@ -1,0 +1,63 @@
+html, body {
+  overflow-x: hidden !important;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #101016;
+}
+.nav-btn-dark {
+  background: transparent;
+  color: #72bcff;
+  border: 1.5px solid #223960;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 17px;
+  margin-left: 16px;
+  padding: 12px 20px;
+  box-shadow: 0 4px 18px 0 #70b4ff20, 0 1px 3px 0 #0d1e3270;
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 0.18s, border 0.15s, color 0.13s, background 0.15s;
+}
+.nav-btn-dark:hover, .nav-btn-dark:focus {
+  border: 1.8px solid #2d8af0;
+  color: #e0f3ff;
+  background: rgba(38, 104, 255, 0.09);
+  box-shadow: 0 4px 38px 0 #37a0ff44;
+}
+.auth-form input {
+  padding: 13px;
+  border-radius: 9px;
+  border: 1.5px solid #28395b;
+  font-size: 16px;
+  background: #1a2135;
+  color: #b7e4ff;
+  margin-bottom: 3px;
+}
+.auth-form input:focus {
+  outline: 2px solid #2988ee;
+  border: 1.5px solid #2988ee;
+}
+.white-blue-btn {
+  padding: 13px 0;
+  background: #18253a;
+  color: #7fd4ff;
+  border: 1.5px solid #274476;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 17px;
+  box-shadow: 0 4px 18px 0 #70b4ff16, 0 1px 3px 0 #1e5ad714;
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 0.18s, border 0.16s, background 0.15s, color 0.15s;
+  margin-top: 8px;
+}
+.white-blue-btn:hover, .white-blue-btn:focus {
+  box-shadow: 0 2px 32px 0 #37a0ff33;
+  border: 1.8px solid #37a0ff;
+  background: #223360;
+  color: #b5eaff;
+}
+
