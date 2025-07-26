@@ -1,15 +1,17 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
+
 class Config:
-    """Configuration class for the application."""
-    
     # Gemini API Configuration
     GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-    GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-1.5-flash')
+    GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
+    
+    # Telegram Bot Configuration
+    TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+    TELEGRAM_ALLOWED_GROUP_IDS = os.getenv('TELEGRAM_ALLOWED_GROUP_IDS', '').split(',') if os.getenv('TELEGRAM_ALLOWED_GROUP_IDS') else []
     
     # Database Configuration
     DATABASE_PATH = os.getenv('DATABASE_PATH', 'events.db')
@@ -26,8 +28,10 @@ class Config:
     
     @classmethod
     def validate_config(cls):
-        """Validate that required configuration is present."""
         if not cls.GEMINI_API_KEY:
             raise ValueError("GEMINI_API_KEY environment variable is required")
+        
+        if not cls.TELEGRAM_BOT_TOKEN:
+            raise ValueError("TELEGRAM_BOT_TOKEN environment variable is required")
         
         return True
