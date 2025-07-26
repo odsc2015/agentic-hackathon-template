@@ -12,7 +12,7 @@ export default function LoginPage() {
     >
       <div className="flex h-full grow flex-col">
         <div className="px-40 flex flex-1 justify-center py-5">
-          <div className="flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+          <div className="flex flex-col w-[512px] max-w-[512px] py-5 flex-1">
             <div className="@container">
               <div className="@[480px]:px-4 @[480px]:py-3">
                 <div
@@ -27,31 +27,6 @@ export default function LoginPage() {
             <h2 className="text-[#0c1c17] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
               Welcome to Cyclewise
             </h2>
-            {/* <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label className="flex flex-col min-w-40 flex-1">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0c1c17] focus:outline-0 focus:ring-0 border-none bg-[#e6f4ef] focus:border-none h-14 placeholder:text-[#46a080] p-4 text-base font-normal leading-normal"
-                  value=""
-                  readOnly
-                />
-              </label>
-            </div>
-            <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label className="flex flex-col min-w-40 flex-1">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0c1c17] focus:outline-0 focus:ring-0 border-none bg-[#e6f4ef] focus:border-none h-14 placeholder:text-[#46a080] p-4 text-base font-normal leading-normal"
-                  value=""
-                  readOnly
-                />
-              </label>
-            </div> */}
-            {/* <p className="text-[#46a080] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline">
-              Forgot Password
-            </p> */}
             <div className="flex px-4 py-3 justify-center gap-3">
               <LoginButton  />
             </div>
