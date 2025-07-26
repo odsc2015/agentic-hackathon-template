@@ -217,4 +217,4 @@ if __name__ == "__main__":
     
     # Run tests
     test_gemini_analyzer()
-    test_gemini_analyzer_class() 
+    test_gemini_analyzer_class()

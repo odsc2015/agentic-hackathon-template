@@ -1,12 +1,20 @@
 import sqlite3
 import os
 from datetime import datetime
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union, Tuple
 import logging
+from contextlib import contextmanager
+from pydantic import BaseModel, validator
+from dataclasses import dataclass
+import logging.config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+class DatabaseError(Exception):
+    pass
 
 
 class DatabaseHandler:
@@ -20,12 +28,13 @@ class DatabaseHandler:
             db_path: Path to the SQLite database file
         """
         self.db_path = db_path
+        self._connection = None
         self.init_database()
     
     def init_database(self):
         """Initialize the database and create tables if they don't exist."""
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 cursor = conn.cursor()
                 
                 # Create Events table
@@ -38,6 +47,7 @@ class DatabaseHandler:
                         event_dt DATETIME NOT NULL,
                         reminder_1_dt DATETIME,
                         reminder_2_dt DATETIME,
+                        status TEXT DEFAULT 'pending',
                         creation_dt DATETIME DEFAULT CURRENT_TIMESTAMP
                     )
                 ''')
@@ -70,6 +80,18 @@ class DatabaseHandler:
             logger.error(f"Error initializing database: {e}")
             raise
     
+    @contextmanager
+    def get_connection(self):
+        if not self._connection:
+            self._connection = sqlite3.connect(self.db_path)
+        try:
+            yield self._connection
+        except Exception:
+            self._connection.rollback()
+            raise
+        finally:
+            self._connection.commit()
+    
     def add_event(self, user_id: str, source_chat_id: str, event_summary: str, 
                   event_dt: datetime, reminder_1_dt: Optional[datetime] = None, 
                   reminder_2_dt: Optional[datetime] = None) -> int:
@@ -88,7 +110,7 @@ class DatabaseHandler:
             event_id: The ID of the newly created event
         """
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 cursor = conn.cursor()
                 
                 cursor.execute('''
@@ -107,7 +129,7 @@ class DatabaseHandler:
             logger.error(f"Error adding event: {e}")
             raise
     
-    def get_event(self, event_id: int) -> Optional[Dict[str, Any]]:
+    def get_event(self, event_id: int) -> Union[Dict[str, Any], None]:
         """
         Retrieve an event by its ID.
         
@@ -118,7 +140,7 @@ class DatabaseHandler:
             Dictionary containing event data or None if not found
         """
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 conn.row_factory = sqlite3.Row
                 cursor = conn.cursor()
                 
@@ -133,7 +155,7 @@ class DatabaseHandler:
                 
         except sqlite3.Error as e:
             logger.error(f"Error retrieving event: {e}")
-            raise
+            raise DatabaseError(f"Failed to get event {event_id}: {e}")
     
     def get_user_events(self, user_id: str) -> List[Dict[str, Any]]:
         """
@@ -146,7 +168,7 @@ class DatabaseHandler:
             List of dictionaries containing event data
         """
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 conn.row_factory = sqlite3.Row
                 cursor = conn.cursor()
                 
@@ -173,7 +195,7 @@ class DatabaseHandler:
             List of dictionaries containing event data for due reminders
         """
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 conn.row_factory = sqlite3.Row
                 cursor = conn.cursor()
                 
@@ -191,6 +213,35 @@ class DatabaseHandler:
             logger.error(f"Error retrieving due reminders: {e}")
             raise
     
+    def get_due_reminders_with_status(self, current_time: datetime) -> List[Dict[str, Any]]:
+        """
+        Get reminders that are due based on status and time.
+        
+        Args:
+            current_time: Current datetime to check against
+            
+        Returns:
+            List of dictionaries containing event data for due reminders
+        """
+        try:
+            with self.get_connection() as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.cursor()
+                
+                cursor.execute('''
+                    SELECT * FROM Events 
+                    WHERE (reminder_1_dt IS NOT NULL AND reminder_1_dt <= ? AND status = 'pending')
+                       OR (reminder_2_dt IS NOT NULL AND reminder_2_dt <= ? AND status = 'reminded_1')
+                    ORDER BY reminder_1_dt ASC, reminder_2_dt ASC
+                ''', (current_time, current_time))
+                
+                rows = cursor.fetchall()
+                return [dict(row) for row in rows]
+                
+        except sqlite3.Error as e:
+            logger.error(f"Error retrieving due reminders with status: {e}")
+            raise
+    
     def update_event(self, event_id: int, **kwargs) -> bool:
         """
         Update an existing event.
@@ -204,12 +255,12 @@ class DatabaseHandler:
             True if update was successful, False otherwise
         """
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 cursor = conn.cursor()
                 
                 # Build dynamic update query
                 valid_fields = ['user_id', 'source_chat_id', 'event_summary', 
-                              'event_dt', 'reminder_1_dt', 'reminder_2_dt']
+                              'event_dt', 'reminder_1_dt', 'reminder_2_dt', 'status']
                 update_fields = []
                 values = []
                 
@@ -250,7 +301,7 @@ class DatabaseHandler:
             True if deletion was successful, False otherwise
         """
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 cursor = conn.cursor()
                 
                 cursor.execute('DELETE FROM Events WHERE event_id = ?', (event_id,))
@@ -275,32 +326,23 @@ class DatabaseHandler:
             Dictionary containing database statistics
         """
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with self.get_connection() as conn:
                 cursor = conn.cursor()
                 
-                # Total events
-                cursor.execute('SELECT COUNT(*) FROM Events')
-                total_events = cursor.fetchone()[0]
-                
-                # Events with reminders
-                cursor.execute('''
-                    SELECT COUNT(*) FROM Events 
-                    WHERE reminder_1_dt IS NOT NULL OR reminder_2_dt IS NOT NULL
-                ''')
-                events_with_reminders = cursor.fetchone()[0]
-                
-                # Upcoming events (next 7 days)
-                cursor.execute('''
-                    SELECT COUNT(*) FROM Events 
-                    WHERE event_dt >= datetime('now') 
-                    AND event_dt <= datetime('now', '+7 days')
-                ''')
-                upcoming_events = cursor.fetchone()[0]
+                query = """
+                SELECT 
+                    COUNT(*) as total_events,
+                    SUM(CASE WHEN reminder_1_dt IS NOT NULL OR reminder_2_dt IS NOT NULL THEN 1 ELSE 0 END) as events_with_reminders,
+                    SUM(CASE WHEN event_dt >= datetime('now') AND event_dt <= datetime('now', '+7 days') THEN 1 ELSE 0 END) as upcoming_events
+                FROM Events
+                """
+                cursor.execute(query)
+                result = cursor.fetchone()
                 
                 return {
-                    'total_events': total_events,
-                    'events_with_reminders': events_with_reminders,
-                    'upcoming_events': upcoming_events
+                    'total_events': result[0],
+                    'events_with_reminders': result[1],
+                    'upcoming_events': result[2]
                 }
                 
         except sqlite3.Error as e:

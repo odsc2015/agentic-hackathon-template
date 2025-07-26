@@ -6,6 +6,8 @@ from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
 import sys
 import os
+from pydantic import BaseModel, Field, ConfigDict
+
 
 # Add the src directory to the path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -56,7 +58,8 @@ class GeminiAnalyzer:
     def _get_system_prompt(self) -> str:
         """Get the system prompt for event extraction."""
         return """
-You are an AI assistant specialized in analyzing chat conversations to detect agreements, plans, and scheduled events. Your task is to identify when people agree to meet, schedule events, or make plans.
+You are an AI assistant specialized in analyzing chat conversations to detect agreements, plans, and scheduled events. 
+Your task is to identify when people agree to meet, schedule events, or make plans.
 
 IMPORTANT: Only respond with valid JSON. If no agreement or event is detected, return {"agreement_detected": false}.
 
@@ -231,8 +234,7 @@ Respond only with valid JSON.
                     user_id=msg['user_id'],
                     username=msg['username'],
                     message=msg['message'],
-                    timestamp=timestamp,
-                    message_id=msg.get('message_id', '')
+                    timestamp=timestamp
                 )
                 chat_messages.append(chat_message)
             
