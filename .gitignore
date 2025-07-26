@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.pyo
+
+# Virtual environment
+.venv/
+env/
+venv/
+ENV/
+*.env
+
+# Editor and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# dotenv and secrets
+.env
+.env.*
+*.secret
+# Ignore service account keys
+/katalyst/secrets/*.json
