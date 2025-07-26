@@ -1,0 +1,30 @@
+
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      -  GOOGLE_API_KEY=${GOOGLE_API_KEY}  # This will read from .env
+    networks:
+      - katalyst-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_URL=http://backend:8000
+    networks:
+      - katalyst-network
+
+networks:
+  katalyst-network:
+    driver: bridge

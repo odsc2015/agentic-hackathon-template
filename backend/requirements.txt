@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+google-genai
+requests
+beautifulsoup4
+python-docx
+google-generativeai
+pandas

@@ -2,6 +2,7 @@ from tools.resume_parser import ResumeParser
 from tools.job_scraper import JobScraper
 from tools.skill_gap import SkillGapAnalyzer
 from tools.roadmap_generator import RoadmapGenerator
+from tools.leetcode_questions import LeetcodeQuestions
 
 class KatalystToolkit:
     def __init__(self, resume_path: str, job_url: str):
@@ -21,6 +22,11 @@ class KatalystToolkit:
         job_data = self.parse_job_description()
         analyzer = SkillGapAnalyzer()
         return analyzer.run(resume_data, job_data)
+    
+    def leetcode_questions(self):
+        job_data = self.parse_job_description()
+        analyzer = LeetcodeQuestions()
+        return analyzer.run(job_data)
 
     def generate_learning_roadmap(self):
         resume_data = self.parse_resume()

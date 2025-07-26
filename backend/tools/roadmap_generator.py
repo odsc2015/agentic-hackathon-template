@@ -3,17 +3,17 @@
 from tools.base_tool import BaseTool
 import google.generativeai as genai
 import os
+import json
 
-import vertexai
-from vertexai.preview.generative_models import GenerativeModel
 
 class RoadmapGenerator(BaseTool):
     def __init__(self):
         # Initialize Vertex AI
-        vertexai.init(project="katalyst-467100", location="us-central1")
+       #vertexai.init(project="katalyst-467100", location="us-central1")
 
         # Use Vertex AI's GenerativeModel
-        self.model = GenerativeModel("gemini-2.0-flash-001")  # or "gemini-1.5-pro" if enabled
+        self.model = genai.GenerativeModel("gemini-2.0-flash-001")  # or "gemini-1.5-pro" if enabled
+
 
 
     @property
@@ -21,12 +21,22 @@ class RoadmapGenerator(BaseTool):
         return "Generate Learning Roadmap"
 
     def run(self, resume_data: dict, jd_data: dict, missing_skills: list, leetcode_questions: str):
+        try:
+            if isinstance(resume_data, str):
+                resume_data = json.loads(resume_data)
+            info = f"""
+            The candidate has the following experience and education:
+            Experience: {resume_data.get("experience", [])}
+            Education: {resume_data.get("education", [])}
+            """
+        except Exception as e:
+            info = f"The canidate has the following resume: {resume_data}"
+
+
         prompt = f"""
         You are a career coach helping a candidate prepare for the role of '{jd_data.get("title", "")}'.
 
-        The candidate has the following experience and education:
-        Experience: {resume_data.get("experience", [])}
-        Education: {resume_data.get("education", [])}
+        {info}
 
         The following skills are **missing** and important for this job:
         {missing_skills}
