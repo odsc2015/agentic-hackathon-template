@@ -1,25 +1,21 @@
 """
-Enhanced FastAPI web server for Insurance Hospital Agent with Treatment Cost Calculation
-Direct integration with existing structure - no external dependencies
+FastAPI web server for Insurance Hospital Agent with Treatment Cost Calculation
 """
 
 import os
-import asyncio
 import json
 import warnings
 import logging
 import datetime
 from typing import Dict, List, Any, Optional
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
 
 # Google ADK imports
-from google.adk.agents import Agent
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.genai import types
-from google.adk.tools import google_search
 
 # Import from your existing coverageAgent
 from coverageAgent import (
@@ -189,12 +185,12 @@ SESSION_ID = "session_001"
 global_runner = None
 global_session_created = False
 
-# Enhanced Pydantic models
+
 class EnhancedInsuranceData(BaseModel):
     tradingPartnerServiceId: str
     lat: float
     lng: float
-    symptoms: str = ""  # New field for cost calculation
+    symptoms: str = ""  
     subscriber: Optional[Dict] = None
     payer: Optional[Dict] = None
     planInformation: Optional[Dict] = None

@@ -1,4 +1,4 @@
-# Enhanced Insurance Hospital Agent with Treatment Cost Calculation
+# Insurance Hospital Agent with Treatment Cost Calculation
 import os
 import requests
 import json
@@ -29,7 +29,7 @@ TRADING_PARTNER_SERVICE_MAP = {
     "BlueCross BlueShield of Texas": "G84980",
 }
 
-# Add missing validation function
+# Insurance validation function
 def check_insurance_validity(insurance_data: Dict = None) -> Dict[str, Any]:
     """
     Check if insurance plan is currently valid based on plan dates.
@@ -137,7 +137,7 @@ def check_insurance_validity(insurance_data: Dict = None) -> Dict[str, Any]:
             "plan_info": {}
         }
 
-# Enhanced JSON Hospital & Cost Agent
+# JSON Hospital & Cost Agent
 json_hospital_cost_agent = Agent(
     name="json_hospital_cost_agent",
     model="gemini-2.0-flash",
@@ -197,89 +197,6 @@ json_hospital_cost_agent = Agent(
     tools=[google_search]
 )
 
-# Enhanced insurance data structure with additional cost calculation fields
-ENHANCED_INSURANCE_DATA = {
-    "tradingPartnerServiceId": "62308",
-    "lat": 40.71427,
-    "lng": -74.00597,
-    "symptoms": "",  # Will be populated from request
-    "subscriber": {
-        "entityIdentifier": "Insured or Subscriber",
-    },
-    "payer": {
-        "entityIdentifier": "Payer",
-        "entityType": "Non-Person Entity",
-        "lastName": "CHLIC",
-        "name": "CHLIC",
-        "federalTaxpayersIdNumber": "591056496",
-        "contactInformation": {
-            "contacts": [
-                {
-                    "communicationMode": "Telephone",
-                    "communicationNumber": "8664942111"
-                },
-                {
-                    "communicationMode": "Uniform Resource Locator (URL)",
-                    "communicationNumber": "cignaforhcp.cigna.com"
-                }
-            ]
-        }
-    },
-    "planInformation": {
-        "groupNumber": "00123874",
-        "groupDescription": "ACME, Inc."
-    },
-    "planDateInformation": {
-        "planBegin": "20250101",
-        "planEnd": "20251231", 
-        "eligibilityBegin": "20250101"
-    },
-    "planStatus": [
-        {
-            "statusCode": "1",
-            "status": "Active Coverage",
-            "planDetails": "Open Access Plus",
-            "serviceTypeCodes": ["30"]
-        }
-    ],
-    "benefitsInformation": [
-        {
-            "code": "1",
-            "name": "Active Coverage",
-            "serviceTypeCodes": ["30"],
-            "serviceTypes": ["Health Benefit Plan Coverage"],
-            "planCoverage": "Open Access Plus"
-        },
-        {
-            "code": "C",
-            "name": "Deductible",
-            "coverageLevelCode": "IND",
-            "coverageLevel": "Individual",
-            "serviceTypeCodes": ["30"],
-            "timeQualifierCode": "23",
-            "timeQualifier": "Calendar Year",
-            "benefitAmount": "5000",
-            "inPlanNetworkIndicatorCode": "Y",
-            "inPlanNetworkIndicator": "Yes"
-        },
-        {
-            "code": "A",
-            "name": "Co-Insurance",
-            "coverageLevel": "Individual", 
-            "serviceTypeCodes": ["30"],
-            "benefitPercent": "80",
-            "inPlanNetworkIndicatorCode": "Y"
-        },
-        {
-            "code": "B", 
-            "name": "Co-Payment",
-            "serviceTypeCodes": ["98"],
-            "serviceTypes": ["Emergency Room"],
-            "benefitAmount": "150",
-            "inPlanNetworkIndicatorCode": "Y"
-        }
-    ]
-}
 
 def extract_cost_info_from_insurance(insurance_data: Dict) -> Dict[str, Any]:
     """
@@ -559,10 +476,6 @@ async def get_hospitals_with_treatment_costs(insurance_data: Dict = None, sympto
     Returns:
         Dictionary with hospital and cost results
     """
-    if insurance_data is None:
-        insurance_data = ENHANCED_INSURANCE_DATA.copy()
-        insurance_data["symptoms"] = symptoms
-    
     try:
         # Extract location and provider
         lat = insurance_data.get("lat")
@@ -663,6 +576,5 @@ __all__ = [
     'json_hospital_cost_agent',
     'get_hospitals_with_treatment_costs',
     'calculate_patient_responsibility',
-    'extract_cost_info_from_insurance',
-    'ENHANCED_INSURANCE_DATA'
+    'extract_cost_info_from_insurance'
 ]
