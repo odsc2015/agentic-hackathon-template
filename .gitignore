@@ -1,0 +1,6 @@
+venv/
+backend/
+frontend/migrations/
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local

@@ -1,0 +1,10 @@
+fastapi
+pydantic
+uvicorn[standard]
+google-cloud-firestore==2.13.1
+google-cloud-storage==2.12.0
+google-cloud-tasks
+google-cloud-secret-manager
+google-api-python-client
+google-auth
+# Add other Google Cloud packages as needed
