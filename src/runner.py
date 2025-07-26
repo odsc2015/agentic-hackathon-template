@@ -1,4 +1,4 @@
-# Modified version of your runner code that passes data to the agent
+# Single query version - no continuous conversation
 
 import os
 import asyncio
@@ -9,56 +9,10 @@ from google.adk.runners import Runner
 from google.genai import types
 from google.adk.tools import google_search
 import json
-
-# Import the data and functions from your agent module
-# You'll need to make sure coverageAgent.py is importable
-try:
-    from coverageAgent import (
+from coverageAgent import (
         INSURANCE_DATA, 
-        TRADING_PARTNER_SERVICE_MAP,
-        check_insurance_validity,
-        get_hospitals_json_format
+        TRADING_PARTNER_SERVICE_MAP
     )
-except ImportError:
-    # Fallback: Define the data here if import fails
-    INSURANCE_DATA = {
-        "tradingPartnerServiceId": "62308",
-        "lat": 42.35843000,
-        "lng": -71.05977000,
-        "subscriber": {"entityIdentifier": "Insured or Subscriber"},
-        "payer": {
-            "entityIdentifier": "Payer",
-            "entityType": "Non-Person Entity", 
-            "lastName": "CHLIC",
-            "name": "CHLIC",
-            "federalTaxpayersIdNumber": "591056496"
-        },
-        "planInformation": {
-            "groupNumber": "00123874",
-            "groupDescription": "ACME, Inc."
-        },
-        "planDateInformation": {
-            "planBegin": "20240101",
-            "planEnd": "20241231",
-            "eligibilityBegin": "20240101"
-        },
-        "planStatus": [
-            {
-                "statusCode": "1",
-                "status": "Active Coverage", 
-                "planDetails": "Open Access Plus",
-                "serviceTypeCodes": ["30"]
-            }
-        ]
-    }
-    
-    TRADING_PARTNER_SERVICE_MAP = {
-        "Aetna": "60054",
-        "Cigna": "62308",
-        "UnitedHealthcare": "87726", 
-        "BlueCross BlueShield of Texas": "G84980",
-    }
-
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -173,32 +127,8 @@ async def call_agent_with_insurance_data(query: str, runner, user_id, session_id
         print(f"❌ JSON parsing error: {e}")
         return []
 
-def should_continue_conversation(user_input: str) -> bool:
-    """Check if the user wants to continue the conversation."""
-    exit_phrases = [
-        "no thank you", "no thanks", "that's all", "goodbye", "bye",
-        "exit", "quit", "done", "finished", "that's it", "nothing else",
-        "no", "nope", "i'm good", "all set", "thanks bye"
-    ]
-    
-    user_input_lower = user_input.lower().strip()
-    
-    for phrase in exit_phrases:
-        if phrase in user_input_lower:
-            return False
-    
-    return True
-
-def get_user_input() -> str:
-    """Get user input with a nice prompt."""
-    try:
-        user_input = input("\n💬 You: ").strip()
-        return user_input
-    except (EOFError, KeyboardInterrupt):
-        return "exit"
-
-async def run_continuous_conversation():
-    """Run a continuous conversation with insurance data context."""
+async def run_single_query(query: str = "Can you help me find hospitals covered by my insurance?"):
+    """Run a single query without continuous conversation."""
     # Create session
     session = await session_service.create_session(
         app_name=APP_NAME,
@@ -215,55 +145,48 @@ async def run_continuous_conversation():
     )
     print(f"Runner created for agent '{runner.agent.name}'.")
     
-    # Welcome message
-    print("\n🤖 Welcome to the Insurance Coverage Assistant!")
-    print("I can help you find hospitals covered by your insurance.")
-    print("Type your questions, and when you're done, just say 'no thank you' or 'goodbye'.\n")
-    
     # Show current insurance info
     insurance_provider = get_insurance_provider_from_data(INSURANCE_DATA)
-    print(f"📋 Current Insurance: {insurance_provider}")
+    print(f"\n📋 Current Insurance: {insurance_provider}")
     print(f"📍 Location: {INSURANCE_DATA.get('lat')}, {INSURANCE_DATA.get('lng')}")
     
-    # Initial conversation starter
-    first_query = "Can you help me find hospitals covered by my insurance?"
+    # Execute single query
     hospitals = await call_agent_with_insurance_data(
-        first_query, 
+        query, 
         runner=runner, 
         user_id=USER_ID, 
         session_id=SESSION_ID,
         insurance_data=INSURANCE_DATA
     )
     
+    # Display results
     if hospitals:
         print(f"\n🏥 Found {len(hospitals)} hospitals:")
-        for i, hospital in enumerate(hospitals[:3], 1):  # Show first 3
-            print(f"{i}. {hospital.get('name', 'Unknown')} - {hospital.get('address', 'No address')}")
-    
-    # Continue conversation loop
-    while True:
-        user_input = get_user_input()
+        for i, hospital in enumerate(hospitals, 1):
+            print(f"\n{i}. {hospital.get('name', 'Unknown')}")
+            print(f"   📍 Address: {hospital.get('address', 'No address')}")
+            print(f"   📞 Phone: {hospital.get('phone', 'No phone')}")
+            print(f"   🏥 Type: {hospital.get('hospital_type', 'Unknown')}")
+            print(f"   ✅ Accepts Insurance: {hospital.get('accepts_insurance', False)}")
         
-        if not user_input or not should_continue_conversation(user_input):
-            print("\n👋 Thank you for using the Insurance Coverage Assistant. Goodbye!")
-            break
+        # Return JSON for further use
+        print(f"\n📄 Complete JSON Response:")
+        print(json.dumps(hospitals, indent=2))
         
-        # Process user query with insurance context
-        hospitals = await call_agent_with_insurance_data(
-            user_input,
-            runner=runner,
-            user_id=USER_ID, 
-            session_id=SESSION_ID,
-            insurance_data=INSURANCE_DATA
-        )
-        
-        if hospitals:
-            print(f"\n🏥 Found {len(hospitals)} hospitals:")
-            for i, hospital in enumerate(hospitals[:5], 1):  # Show first 5
-                print(f"{i}. {hospital.get('name', 'Unknown')} - {hospital.get('phone', 'No phone')}")
+        return hospitals
+    else:
+        print("\n❌ No hospitals found or error occurred.")
+        return []
 
+# Main execution
 if __name__ == "__main__":
     try:
-        asyncio.run(run_continuous_conversation())
+        # You can customize the query here
+        query = "Find hospitals near me that accept my Cigna insurance"
+        
+        result = asyncio.run(run_single_query(query))
+        
+        print(f"\n✅ Query completed. Found {len(result)} hospitals.")
+        
     except Exception as e:
         print(f"An error occurred: {e}")
