@@ -9,7 +9,7 @@ import os
 # --- Configuration ---
 # Path to your Firebase service account key file
 # IMPORTANT: This file should be in your .gitignore!
-SERVICE_ACCOUNT_KEY_PATH = 'src/firebase-service-account.json'
+SERVICE_ACCOUNT_KEY_PATH = 'src/.streamlit/firestore-creds.json'
 
 # Directory where your generated JSON data files are located
 DATA_DIR = 'src/data'

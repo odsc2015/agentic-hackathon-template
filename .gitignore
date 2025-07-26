@@ -1,2 +1,6 @@
 .env
 firebase-service-account.json
+.venv
+src/.streamlit
+src/__pycache__
+plan.md

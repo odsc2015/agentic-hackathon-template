@@ -3,3 +3,9 @@ python-dotenv==1.0.0
 requests==2.32.3
 geopy==2.4.1
 firebase-admin==6.5.0
+streamlit
+pandas
+google-cloud-firestore
+google-genai
+pydantic
+python-dotenv
