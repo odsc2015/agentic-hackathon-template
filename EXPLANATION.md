@@ -1,35 +1,43 @@
-# Technical Explanation
+# LearnLite Quiz Workflow
+This repository contains an agent-based system designed to create a dynamic learning and quizzing experience. It leverages a series of interconnected agents to plan a curriculum, generate course content, act as an instructor, create quizzes, conduct them, and finally evaluate user responses.
 
-## 1. Agent Workflow
+## 1. Features
+1. **Curriculum Planning**: Automatically generates a learning curriculum based on a given topic.
+2. **Course Content Generation**: Creates comprehensive course material for the planned curriculum.
+3. **Interactive Instruction**: An instructor agent delivers the course content in an engaging, lesson-like format.
+4. **Quiz Generation**: Develops multiple-choice quizzes with questions, options, and correct answers.
+5. **Quiz Conduction**: Guides the user through the quiz, collects answers, and stores them.
+6 **Automated Evaluation**: Compares user answers against correct ones, provides correctness feedback, individual question reviews, and a total score summary.  
 
-Describe step-by-step how your agent processes an input:
-1. Receive user input  
-2. (Optional) Retrieve relevant memory  
-3. Plan sub-tasks (e.g., using ReAct / BabyAGI pattern)  
-4. Call tools or APIs as needed  
-5. Summarize and return final output  
+## 2. Key Agents
 
-## 2. Key Modules
+The system is composed of the following sequential agents:
 
-- **Planner** (`planner.py`): …  
-- **Executor** (`executor.py`): …  
-- **Memory Store** (`memory.py`): …  
+- **CurriculumPlanner**: Plans the learning curriculum for a specified topic.
+- **CourseContentCreator**: Generates detailed course content based on the curriculum.
+- **Instructor**: Presents the generated course content as an interactive lesson.
+- **QuizMaker**: Creates a quiz with questions, options, and correct answers from the course content.
+- **QuizConductor**: Manages the quiz flow, prompts the user for answers, and collects their responses.
+- **QuizEvaluator**: Assesses the user's performance on the quiz, providing scores and detailed feedback.
 
-## 3. Tool Integration
+## 3. Setup and Installation
+### Prerequisites
+- Python > 3.9
+- google-generativeai library (or similar, depending on the google.adk dependency)
+- python-dotenv (for managing API keys)
+- pydantic
+- json_repair
+ 
 
-List each external tool or API and how you call it:
-- **Search API**: function `search(query)`  
-- **Calculator**: LLM function calling  
-
-## 4. Observability & Testing
-
-Explain your logging and how judges can trace decisions:
-- Logs saved in `logs/` directory  
-- `TEST.sh` exercises main path  
+## 4. Installation
+1. Clone the repository:
+```
+git clone <your-repository-url>
+cd <your-repository-name>
+```
 
 ## 5. Known Limitations
 
 Be honest about edge cases or performance bottlenecks:
-- Long-running API calls  
 - Handling of ambiguous user inputs  
 
