@@ -36,7 +36,24 @@ git clone <your-repository-url>
 cd <your-repository-name>
 ```
 
-## 5. Known Limitations
+2. Install Dependencies:
+```
+pip install -r requirements.txt
+```
+
+3. Set up environment variables:
+```
+GOOGLE_GENAI_USE_VERTEXAI=FALSE
+GOOGLE_API_KEY=<your-api-key>
+GOOGLE_GENAI_MODEL="gemini-2.0-flash"
+```
+
+
+## 5. Usage
+1. To run the LearnLite Quiz Workflow, run below command from path ```<your-directory>/fourcast_agents```:
+```
+adk web
+```
 
 Be honest about edge cases or performance bottlenecks:
 - Handling of ambiguous user inputs  
