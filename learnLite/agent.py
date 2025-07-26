@@ -138,6 +138,7 @@ evaluation_agent = LlmAgent(
     instruction=(
         """Compare each user answer in state['user_answers'] to the correct answers in state['actual_answers'] for each question within state['questions']. 
         For each, show the question, user's response, correct response, correctness and a brief review. 
+        Give a score of 1 for each correct answer and 0 for each incorrect answer and add them up to generate the final score.
         Summarize the total score in state['score'] and provide a review in state['review'].
         """
     ),
