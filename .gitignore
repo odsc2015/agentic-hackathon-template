@@ -1,0 +1,27 @@
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# OS files
+.DS_Store
+
+# SQLite database
+*.db
+
+# Environment variables
+.env
+
+# Gemini API key backup
+gemini_api_key.txt
+
+# VS Code settings
+.vscode/
+node_modules/

@@ -1,42 +1,75 @@
-# Agentic AI App Hackathon Template
+# White Mirror Dashboard
 
-Welcome! This repository is your starting point for the **Agentic AI App Hackathon**. It includes:
+A cognitive companion app powered by React (Vite) frontend and FastAPI backend with Google Gemini agents.
 
-- A consistent folder structure  
-- An environment spec (`environment.yml` or `Dockerfile`)  
-- Documentation placeholders to explain your design and demo
+---
 
-## 📋 Submission Checklist
+## Features
 
-- [ ] All code in `src/` runs without errors  
-- [ ] `ARCHITECTURE.md` contains a clear diagram sketch and explanation  
-- [ ] `EXPLANATION.md` covers planning, tool use, memory, and limitations  
-- [ ] `DEMO.md` links to a 3–5 min video with timestamped highlights  
+- Interactive React dashboard (Vite)
+- Cognitive agents (psychologist, mindcoach, facts, etc.)
+- FastAPI backend with Gemini LLM integration
+- Parallel agent workflow and session management
 
+---
 
-## 🚀 Getting Started
+## Getting Started
 
-1. **Clone / Fork** this template.  Very Important. Fork Name MUST be the same name as the teamn name
+### 1. **Frontend (React + Vite)**
 
+```bash
+cd white-mirror-dashboard
+npm install
+npm run dev
+```
+Visit [http://localhost:5173](http://localhost:5173) in your browser.
 
-## 📂 Folder Layout
+---
 
-![Folder Layout Diagram](images/folder-githb.png)
+### 2. **Backend (FastAPI + Gemini)**
 
+```bash
+cd ../src
+python3.11 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+API runs at [http://localhost:8000](http://localhost:8000).
 
+---
 
-## 🏅 Judging Criteria
+### 3. **Environment Variables**
 
-- **Technical Excellence **  
-  This criterion evaluates the robustness, functionality, and overall quality of the technical implementation. Judges will assess the code's efficiency, the absence of critical bugs, and the successful execution of the project's core features.
+Create a `.env` file in your backend folder with:
 
-- **Solution Architecture & Documentation **  
-  This focuses on the clarity, maintainability, and thoughtful design of the project's architecture. This includes assessing the organization and readability of the codebase, as well as the comprehensiveness and conciseness of documentation (e.g., GitHub README, inline comments) that enables others to understand and potentially reproduce or extend the solution.
+```
+GEMINI_API_KEY=your_google_gemini_api_key
+```
 
-- **Innovative Gemini Integration **  
-  This criterion specifically assesses how effectively and creatively the Google Gemini API has been incorporated into the solution. Judges will look for novel applications, efficient use of Gemini's capabilities, and the impact it has on the project's functionality or user experience. You are welcome to use additional Google products.
+---
 
-- **Societal Impact & Novelty **  
-  This evaluates the project's potential to address a meaningful problem, contribute positively to society, or offer a genuinely innovative and unique solution. Judges will consider the originality of the idea, its potential real‑world applicability, and its ability to solve a challenge in a new or impactful way.
+## Project Structure
 
+```
+white-mirror-dashboard/   # React frontend
+src/                      # FastAPI backend
+  agents/                 # Cognitive agent modules
+  main.py                 # FastAPI entrypoint
+  workflow.py             # Parallel agent workflow
+  Planner.py              # Gemini planner logic
+```
 
+---
+
+## Usage
+
+- Start backend and frontend servers.
+- Interact with cognitive agents via the dashboard.
+- Each chat/query creates a fresh session and agent workflow.
+
+---
+
+## License
+
+MIT
