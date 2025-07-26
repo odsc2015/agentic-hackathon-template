@@ -1,6 +1,7 @@
 import logging
 import sys
 import os
+import asyncio
 from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -43,7 +44,7 @@ class ReminderScheduler:
         try:
             # Add the job to run every 5 minutes
             self.scheduler.add_job(
-                func=self.check_and_send_reminders,
+                func=self._run_async_check,
                 trigger=IntervalTrigger(minutes=5),
                 id='reminder_check',
                 name='Check and send reminders',
@@ -57,6 +58,23 @@ class ReminderScheduler:
             logger.error(f"Error starting scheduler: {e}")
             raise
     
+    def _run_async_check(self):
+        """Wrapper to run the async check_and_send_reminders function."""
+        try:
+            # Create a new event loop for this thread
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            
+            # Run the async function
+            loop.run_until_complete(self.check_and_send_reminders())
+            
+        except Exception as e:
+            logger.error(f"Error in async check wrapper: {e}")
+        finally:
+            # Clean up the loop
+            if loop and not loop.is_closed():
+                loop.close()
+    
     def stop(self):
         """Stop the scheduler."""
         try:
@@ -65,7 +83,7 @@ class ReminderScheduler:
         except Exception as e:
             logger.error(f"Error stopping scheduler: {e}")
     
-    def check_and_send_reminders(self):
+    async def check_and_send_reminders(self):
         """
         Check for due reminders and send them to users.
         This function runs every 5 minutes.
@@ -83,13 +101,14 @@ class ReminderScheduler:
             
             logger.info(f"Found {len(due_reminders)} due reminders")
             
-            for reminder in due_reminders:
-                self._process_reminder(reminder, current_time)
+            # Process reminders concurrently
+            tasks = [self._process_reminder(reminder, current_time) for reminder in due_reminders]
+            await asyncio.gather(*tasks, return_exceptions=True)
                 
         except Exception as e:
             logger.error(f"Error in check_and_send_reminders: {e}")
     
-    def _process_reminder(self, reminder: Dict[str, Any], current_time: datetime):
+    async def _process_reminder(self, reminder: Dict[str, Any], current_time: datetime):
         """
         Process a single reminder.
         
@@ -118,16 +137,16 @@ class ReminderScheduler:
             is_reminder_2 = (reminder_2_dt and reminder_2_dt <= current_time and status == 'reminded_1')
             
             if is_reminder_1:
-                self._send_reminder_1(event_id, user_id, event_summary, event_dt)
+                await self._send_reminder_1(event_id, user_id, event_summary, event_dt)
             elif is_reminder_2:
-                self._send_reminder_2(event_id, user_id, event_summary, event_dt)
+                await self._send_reminder_2(event_id, user_id, event_summary, event_dt)
             else:
                 logger.warning(f"Unexpected reminder state for event {event_id}")
                 
         except Exception as e:
             logger.error(f"Error processing reminder for event {reminder.get('event_id')}: {e}")
     
-    def _send_reminder_1(self, event_id: int, user_id: str, event_summary: str, event_dt: datetime):
+    async def _send_reminder_1(self, event_id: int, user_id: str, event_summary: str, event_dt: datetime):
         """
         Send the first reminder for an event.
         
@@ -141,8 +160,8 @@ class ReminderScheduler:
             # Format the reminder message
             message = self._format_reminder_message(event_summary, event_dt, is_first_reminder=True)
             
-            # Send the message (placeholder for future messenger integration)
-            success = self._send_message_to_user(user_id, message)
+            # Send the message via Telegram
+            success = await self._send_message_to_user(user_id, message)
             
             if success:
                 # Update status to 'reminded_1'
@@ -154,7 +173,7 @@ class ReminderScheduler:
         except Exception as e:
             logger.error(f"Error sending reminder 1 for event {event_id}: {e}")
     
-    def _send_reminder_2(self, event_id: int, user_id: str, event_summary: str, event_dt: datetime):
+    async def _send_reminder_2(self, event_id: int, user_id: str, event_summary: str, event_dt: datetime):
         """
         Send the second reminder for an event.
         
@@ -168,8 +187,8 @@ class ReminderScheduler:
             # Format the reminder message
             message = self._format_reminder_message(event_summary, event_dt, is_first_reminder=False)
             
-            # Send the message (placeholder for future messenger integration)
-            success = self._send_message_to_user(user_id, message)
+            # Send the message via Telegram
+            success = await self._send_message_to_user(user_id, message)
             
             if success:
                 # Update status to 'reminded_2'
@@ -216,9 +235,9 @@ class ReminderScheduler:
         else:
             return f"⏰ Final Reminder: You have '{event_summary}' on {event_time_str} ({time_str})"
     
-    def _send_message_to_user(self, user_id: str, message: str) -> bool:
+    async def _send_message_to_user(self, user_id: str, message: str) -> bool:
         """
-        Send a message to a user. This is a placeholder for future messenger integration.
+        Send a message to a user via Telegram.
         
         Args:
             user_id: User ID to send message to
@@ -228,19 +247,12 @@ class ReminderScheduler:
             True if message was sent successfully, False otherwise
         """
         try:
-            # TODO: Replace this with actual messenger integration
-            # For now, just log the message
-            logger.info(f"📤 Sending message to user {user_id}: {message}")
-            
-            # Placeholder for future implementation:
-            # if self.messenger:
-            #     return self.messenger.send_private_message(user_id, message)
-            # else:
-            #     logger.warning("Messenger not configured")
-            #     return False
-            
-            # For testing purposes, return True
-            return True
+            if self.messenger:
+                return await self.messenger.send_message(user_id, message)
+            else:
+                logger.warning("Telegram messenger not configured")
+                logger.info(f"📤 Would send message to user {user_id}: {message}")
+                return False
             
         except Exception as e:
             logger.error(f"Error sending message to user {user_id}: {e}")

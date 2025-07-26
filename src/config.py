@@ -11,8 +11,7 @@ class Config:
     
     # Telegram Bot Configuration
     TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-    TELEGRAM_ALLOWED_GROUP_IDS = os.getenv('TELEGRAM_ALLOWED_GROUP_IDS', '').split(',') if os.getenv('TELEGRAM_ALLOWED_GROUP_IDS') else []
-    
+
     # Database Configuration
     DATABASE_PATH = os.getenv('DATABASE_PATH', 'events.db')
     
