@@ -18,7 +18,11 @@ class KatalystAgent:
         skill_gap = self.tools["skill_gap_analysis"]()
         print("✅ Skill gap analyzed.")
 
-        # Step 4: Generate Learning Roadmap
+        # Step 4: Leetcode Questions
+        leetcode_questions = self.tools["leetcode_questions"]()
+        print("✅ Leetcode questions generated.")
+
+        # Step 5: Generate Learning Roadmap
         roadmap = self.tools["generate_learning_roadmap"]()
         print("✅ Learning roadmap generated.")
 
@@ -26,5 +30,6 @@ class KatalystAgent:
             "resume": resume,
             "job_description": job,
             "skill_gap": skill_gap,
+            "leetcode_questions": leetcode_questions,
             "roadmap": roadmap
         }

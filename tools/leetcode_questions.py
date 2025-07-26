@@ -1,4 +1,6 @@
 from requests import exceptions
+import json
+import pandas as pd
 
 class LeetcodeQuestions:
     def __init__(self, company: str):
@@ -23,7 +25,7 @@ class LeetcodeQuestions:
             df_sorted_json = df_sorted.to_json(orient="records")
             self.cache[company] = df_sorted_json
             
-            return df_sorted_json
+            return json.dumps(df_sorted_json)
         except exceptions.HTTPError as http_err:
             print(f"Could not find Leetcode Questions for {company}.")
             return "No data available for this company"

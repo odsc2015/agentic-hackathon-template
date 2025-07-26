@@ -20,7 +20,7 @@ class RoadmapGenerator(BaseTool):
     def name(self):
         return "Generate Learning Roadmap"
 
-    def run(self, resume_data: dict, jd_data: dict, missing_skills: list):
+    def run(self, resume_data: dict, jd_data: dict, missing_skills: list, leetcode_questions: str):
         prompt = f"""
         You are a career coach helping a candidate prepare for the role of '{jd_data.get("title", "")}'.
 
@@ -36,6 +36,8 @@ class RoadmapGenerator(BaseTool):
         - Recommended courses (preferably free or affordable)
         - Projects or hands-on tasks
         - Any open-source resources or GitHub repos
+        - Include leetcode questions for the canidate to practice based on the following leetcode questions: 
+        The candidate has the following leetcode questions:
 
         Keep the tone encouraging and concise.
         """
