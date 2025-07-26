@@ -8,7 +8,7 @@ import uuid
 import os
 USER_ID = "cognitive_user_001"
 api_key = os.getenv("GOOGLE_API_KEY")
-os.environ['GOOGLE_API_KEY'] = api_keyx
+os.environ['GOOGLE_API_KEY'] = api_key
 
 async def run_agent_query(agent, query, session, user_id, session_service=None):
     runner = Runner(agent=agent, session_service=session_service, app_name=agent.name)
