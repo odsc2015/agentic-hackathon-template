@@ -1,0 +1,6 @@
+[
+    {
+        "input": "Deadbody found in Suitcase at KL University ",
+        "response": "Reasoning:The provided text mentions two separate incidents: one involving a deceased student at KLU, and another involving an unidentified man's body found in a suitcase in Taman Cheras Perdana, near Kajang, KL.  Neither incident definitively states the body was found *on* the KLU campus.\n\nVerdict: UNVERIFIED\nFake Probability: 70%\nConfidence: Medium"
+    }
+]
