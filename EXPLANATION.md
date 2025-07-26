@@ -61,6 +61,9 @@ adk web
 4. Once all the questions are answered, the loop stores your response and triggers the evaluation_agent which provides a score and a review. 
 
 ### sample outputs
+#### Snippet of Instructor's Class Session
 ![sample instructor session](images/snippet_of_instructor.png)
+#### Snippet of Quiz Conduction Loop
 ![sample quiz conduction loop (in terminal)](images/sample_quiz_conduction.png)
+#### Snippet of Final Evaluation Score and Report
 ![sample Evaluation output](images/evaluation_output.png)
