@@ -1,0 +1,49 @@
+#Environment file
+.env
+
+#User memory and data
+user_profile.json
+
+#Python cache & compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+
+#Jupyter notebooks checkpoints (if using notebooks)
+.ipynb_checkpoints/
+
+#VSCode and PyCharm editor settings
+.vscode/
+.idea/
+
+#Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+#Python environment files
+*.egg-info/
+*.egg
+*.log
+pip-log.txt
+pip-delete-this-directory.txt
+
+#Build artifacts
+build/
+dist/
+
+#OS files
+.DS_Store
+Thumbs.db
+
+#Dependency lock (optional if not using pip freeze)
+poetry.lock
+Pipfile.lock
+
+# Ignore Python venv and system paths
+.venv/
+src/.venv/
+src/Lib/
+src/Scripts/
+src/Include/
