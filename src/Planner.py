@@ -12,11 +12,9 @@ load_dotenv()
 
 
 # Initialize Gemini client (API key is expected in environment)
-api_key = os.getenv("GEMINI_API_KEY")
-if api_key is None:
-    api_key = os.getenv("GOOGLE_API_KEY")
-print(aallpi_key)
-os.environ['GOOGLE_AI_API_KEY'] = api_key
+
+api_key = os.getenv("GOOGLE_API_KEY")
+os.environ['GOOGLE_API_KEY'] = api_key
 if api_key is None:
     raise RuntimeError("GEMINI_API_KEY not set in environment. Please configure your API key securely.")
 client = genai.Client(api_key=api_key)
