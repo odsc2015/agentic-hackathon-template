@@ -58,5 +58,9 @@ adk web
 
 3. The course_content_creator and instructor will work together to conduct a class. You are then prompted to take a small quiz. The answers should be filled in using your Terminal.
 
-4. Once all the questions are answered, the loop stores your response and triggers the evaluation_agent which provides a score and a review.  
+4. Once all the questions are answered, the loop stores your response and triggers the evaluation_agent which provides a score and a review. 
 
+### sample outputs
+![sample instructor session](images/snippet_of_instructor.png)
+![sample quiz conduction loop (in terminal)](images/sample_quiz_conduction.png)
+![sample Evaluation output](images/evaluation_output.png)
