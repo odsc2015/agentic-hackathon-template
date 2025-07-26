@@ -19,7 +19,7 @@ load_dotenv()
 
 # Configure APIs
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-os.environ["GOOGLE_API_KEY"] = os.getenv('GOOGLE_API_KEY', 'AIzaSyDdcvpwWOcXzhHmcR5c9DhT9J3uDOxnQzU')
+os.environ["GOOGLE_API_KEY"] = os.getenv('GOOGLE_API_KEY')
 
 # Trading partner service mapping
 TRADING_PARTNER_SERVICE_MAP = {
