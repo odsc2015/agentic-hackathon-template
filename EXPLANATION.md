@@ -29,7 +29,7 @@ The system is composed of the following sequential agents:
 - json_repair
  
 
-## 4. Installation
+### Installation
 1. Clone the repository:
 ```
 git clone <your-repository-url>
@@ -49,7 +49,7 @@ GOOGLE_GENAI_MODEL="gemini-2.0-flash"
 ```
 
 
-## 5. Usage
+### How to run
 1. To run the LearnLite Quiz Workflow, run below command from path ```<your-directory>/fourcast_agents```:
 ```
 adk web
