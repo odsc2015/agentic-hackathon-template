@@ -1,0 +1,407 @@
+[
+    {
+        "course_id": "COURSE001",
+        "course_title": "Intro to Word & Excel",
+        "description": "This course, 'Intro to Word & Excel', covers essential topics for skill development.",
+        "duration_hours": 27,
+        "learning_format": "In-Person (Library)",
+        "cost": 0.0,
+        "provider_name": "Digital Growth Institute",
+        "start_date": "2025-09-17",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL002",
+            "SKILL020",
+            "SKILL009"
+        ]
+    },
+    {
+        "course_id": "COURSE002",
+        "course_title": "Customer Service Essentials",
+        "description": "This course, 'Customer Service Essentials', covers essential topics for skill development.",
+        "duration_hours": 15,
+        "learning_format": "In-Person (Library)",
+        "cost": 50.0,
+        "provider_name": "London Skills Hub",
+        "start_date": "2024-12-23",
+        "end_date": "2025-02-10",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL010",
+            "SKILL012",
+            "SKILL001"
+        ]
+    },
+    {
+        "course_id": "COURSE003",
+        "course_title": "Build Your First Website",
+        "description": "This course, 'Build Your First Website', covers essential topics for skill development.",
+        "duration_hours": 12,
+        "learning_format": "In-Person (Community Centre)",
+        "cost": 50.0,
+        "provider_name": "Community Learning London",
+        "start_date": "2024-03-14",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL008"
+        ]
+    },
+    {
+        "course_id": "COURSE004",
+        "course_title": "Digital Marketing for Beginners",
+        "description": "This course, 'Digital Marketing for Beginners', covers essential topics for skill development.",
+        "duration_hours": 15,
+        "learning_format": "In-Person (Community Centre)",
+        "cost": 0.0,
+        "provider_name": "London Skills Hub",
+        "start_date": "2025-06-29",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL014",
+            "SKILL002"
+        ]
+    },
+    {
+        "course_id": "COURSE005",
+        "course_title": "Python for Absolute Beginners",
+        "description": "This course, 'Python for Absolute Beginners', covers essential topics for skill development.",
+        "duration_hours": 28,
+        "learning_format": "Online Live",
+        "cost": 50.0,
+        "provider_name": "Future Learn UK",
+        "start_date": "2025-07-26",
+        "end_date": null,
+        "is_active": false,
+        "skill_ids": [
+            "SKILL012",
+            "SKILL011"
+        ]
+    },
+    {
+        "course_id": "COURSE006",
+        "course_title": "Effective CVs & Cover Letters",
+        "description": "This course, 'Effective CVs & Cover Letters', covers essential topics for skill development.",
+        "duration_hours": 23,
+        "learning_format": "In-Person (Library)",
+        "cost": 0.0,
+        "provider_name": "Future Learn UK",
+        "start_date": "2024-10-01",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL024",
+            "SKILL021",
+            "SKILL014"
+        ]
+    },
+    {
+        "course_id": "COURSE007",
+        "course_title": "Budgeting & Saving",
+        "description": "This course, 'Budgeting & Saving', covers essential topics for skill development.",
+        "duration_hours": 24,
+        "learning_format": "In-Person (Community Centre)",
+        "cost": 0.0,
+        "provider_name": "Digital Growth Institute",
+        "start_date": "2025-09-18",
+        "end_date": null,
+        "is_active": false,
+        "skill_ids": [
+            "SKILL005",
+            "SKILL002"
+        ]
+    },
+    {
+        "course_id": "COURSE008",
+        "course_title": "Health & Safety at Work",
+        "description": "This course, 'Health & Safety at Work', covers essential topics for skill development.",
+        "duration_hours": 18,
+        "learning_format": "In-Person (Library)",
+        "cost": 10.0,
+        "provider_name": "London Skills Hub",
+        "start_date": "2025-11-21",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL022",
+            "SKILL015"
+        ]
+    },
+    {
+        "course_id": "COURSE009",
+        "course_title": "Food Safety Level 1",
+        "description": "This course, 'Food Safety Level 1', covers essential topics for skill development.",
+        "duration_hours": 20,
+        "learning_format": "Online Self-Paced",
+        "cost": 0.0,
+        "provider_name": "Future Learn UK",
+        "start_date": "2024-02-19",
+        "end_date": "2024-03-19",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL015",
+            "SKILL002",
+            "SKILL010"
+        ]
+    },
+    {
+        "course_id": "COURSE010",
+        "course_title": "Advanced Excel Techniques",
+        "description": "This course, 'Advanced Excel Techniques', covers essential topics for skill development.",
+        "duration_hours": 39,
+        "learning_format": "Online Self-Paced",
+        "cost": 0.0,
+        "provider_name": "Digital Growth Institute",
+        "start_date": "2025-03-28",
+        "end_date": "2025-06-16",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL021",
+            "SKILL006",
+            "SKILL025"
+        ]
+    },
+    {
+        "course_id": "COURSE011",
+        "course_title": "Social Media for Business",
+        "description": "This course, 'Social Media for Business', covers essential topics for skill development.",
+        "duration_hours": 37,
+        "learning_format": "Online Self-Paced",
+        "cost": 0.0,
+        "provider_name": "Digital Growth Institute",
+        "start_date": "2024-09-14",
+        "end_date": "2024-10-09",
+        "is_active": false,
+        "skill_ids": [
+            "SKILL016"
+        ]
+    },
+    {
+        "course_id": "COURSE012",
+        "course_title": "Introduction to UX Design",
+        "description": "This course, 'Introduction to UX Design', covers essential topics for skill development.",
+        "duration_hours": 33,
+        "learning_format": "Online Self-Paced",
+        "cost": 50.0,
+        "provider_name": "Future Learn UK",
+        "start_date": "2024-02-07",
+        "end_date": "2024-02-21",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL021",
+            "SKILL008",
+            "SKILL017"
+        ]
+    },
+    {
+        "course_id": "COURSE013",
+        "course_title": "Public Speaking Confidence",
+        "description": "This course, 'Public Speaking Confidence', covers essential topics for skill development.",
+        "duration_hours": 18,
+        "learning_format": "In-Person (Library)",
+        "cost": 10.0,
+        "provider_name": "London Skills Hub",
+        "start_date": "2024-06-12",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL006",
+            "SKILL024",
+            "SKILL003"
+        ]
+    },
+    {
+        "course_id": "COURSE014",
+        "course_title": "Online Job Search Strategies",
+        "description": "This course, 'Online Job Search Strategies', covers essential topics for skill development.",
+        "duration_hours": 23,
+        "learning_format": "In-Person (Community Centre)",
+        "cost": 0.0,
+        "provider_name": "London Skills Hub",
+        "start_date": "2025-12-10",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL022",
+            "SKILL006",
+            "SKILL004"
+        ]
+    },
+    {
+        "course_id": "COURSE015",
+        "course_title": "Basic Photography Skills",
+        "description": "This course, 'Basic Photography Skills', covers essential topics for skill development.",
+        "duration_hours": 33,
+        "learning_format": "Online Live",
+        "cost": 10.0,
+        "provider_name": "Digital Growth Institute",
+        "start_date": "2025-08-11",
+        "end_date": "2025-11-04",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL023"
+        ]
+    },
+    {
+        "course_id": "COURSE016",
+        "course_title": "Mindfulness for Stress Reduction",
+        "description": "This course, 'Mindfulness for Stress Reduction', covers essential topics for skill development.",
+        "duration_hours": 30,
+        "learning_format": "In-Person (Library)",
+        "cost": 0.0,
+        "provider_name": "Community Learning London",
+        "start_date": "2025-03-26",
+        "end_date": "2025-04-23",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL009",
+            "SKILL025"
+        ]
+    },
+    {
+        "course_id": "COURSE017",
+        "course_title": "Conflict Resolution",
+        "description": "This course, 'Conflict Resolution', covers essential topics for skill development.",
+        "duration_hours": 33,
+        "learning_format": "In-Person (Library)",
+        "cost": 10.0,
+        "provider_name": "Community Learning London",
+        "start_date": "2024-03-23",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL012"
+        ]
+    },
+    {
+        "course_id": "COURSE018",
+        "course_title": "Introduction to AI",
+        "description": "This course, 'Introduction to AI', covers essential topics for skill development.",
+        "duration_hours": 34,
+        "learning_format": "In-Person (Library)",
+        "cost": 0.0,
+        "provider_name": "Community Learning London",
+        "start_date": "2024-06-27",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL010",
+            "SKILL011"
+        ]
+    },
+    {
+        "course_id": "COURSE019",
+        "course_title": "Data Analysis with Spreadsheets",
+        "description": "This course, 'Data Analysis with Spreadsheets', covers essential topics for skill development.",
+        "duration_hours": 9,
+        "learning_format": "Online Live",
+        "cost": 0.0,
+        "provider_name": "London Skills Hub",
+        "start_date": "2025-09-13",
+        "end_date": "2025-12-04",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL014",
+            "SKILL012",
+            "SKILL021"
+        ]
+    },
+    {
+        "course_id": "COURSE020",
+        "course_title": "Professional Email Etiquette",
+        "description": "This course, 'Professional Email Etiquette', covers essential topics for skill development.",
+        "duration_hours": 15,
+        "learning_format": "In-Person (Library)",
+        "cost": 0.0,
+        "provider_name": "Digital Growth Institute",
+        "start_date": "2025-09-17",
+        "end_date": "2025-09-26",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL012",
+            "SKILL004"
+        ]
+    },
+    {
+        "course_id": "COURSE021",
+        "course_title": "Time Management for Productivity",
+        "description": "This course, 'Time Management for Productivity', covers essential topics for skill development.",
+        "duration_hours": 12,
+        "learning_format": "Online Self-Paced",
+        "cost": 10.0,
+        "provider_name": "Community Learning London",
+        "start_date": "2025-04-10",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL012",
+            "SKILL023",
+            "SKILL019"
+        ]
+    },
+    {
+        "course_id": "COURSE022",
+        "course_title": "Introduction to Cloud Platforms",
+        "description": "This course, 'Introduction to Cloud Platforms', covers essential topics for skill development.",
+        "duration_hours": 12,
+        "learning_format": "In-Person (Community Centre)",
+        "cost": 50.0,
+        "provider_name": "Community Learning London",
+        "start_date": "2025-07-08",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL009",
+            "SKILL020",
+            "SKILL017"
+        ]
+    },
+    {
+        "course_id": "COURSE023",
+        "course_title": "Basic Mobile App UI Design",
+        "description": "This course, 'Basic Mobile App UI Design', covers essential topics for skill development.",
+        "duration_hours": 16,
+        "learning_format": "In-Person (Library)",
+        "cost": 0.0,
+        "provider_name": "Future Learn UK",
+        "start_date": "2025-10-08",
+        "end_date": null,
+        "is_active": false,
+        "skill_ids": [
+            "SKILL021",
+            "SKILL003"
+        ]
+    },
+    {
+        "course_id": "COURSE024",
+        "course_title": "Networking for Career Growth",
+        "description": "This course, 'Networking for Career Growth', covers essential topics for skill development.",
+        "duration_hours": 39,
+        "learning_format": "In-Person (Community Centre)",
+        "cost": 10.0,
+        "provider_name": "Community Learning London",
+        "start_date": "2024-12-14",
+        "end_date": null,
+        "is_active": true,
+        "skill_ids": [
+            "SKILL003"
+        ]
+    },
+    {
+        "course_id": "COURSE025",
+        "course_title": "Interview Skills Workshop",
+        "description": "This course, 'Interview Skills Workshop', covers essential topics for skill development.",
+        "duration_hours": 24,
+        "learning_format": "Online Live",
+        "cost": 0.0,
+        "provider_name": "Future Learn UK",
+        "start_date": "2024-11-10",
+        "end_date": "2024-11-18",
+        "is_active": true,
+        "skill_ids": [
+            "SKILL015"
+        ]
+    }
+]
