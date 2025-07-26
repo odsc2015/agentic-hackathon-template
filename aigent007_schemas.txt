@@ -1,0 +1,204 @@
+List of tables:
+
+### **1. `Individuals` Table**
+
+This table stores basic, anonymized (where possible/appropriate) information about the individuals participating in the program.
+
+| Column Name        | Data Type   | Constraints             | Description                                          |
+| :----------------- | :---------- | :---------------------- | :--------------------------------------------------- |
+| `individual_id`    | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each individual.               |
+| `contact_name`     | VARCHAR(255)| NOT NULL                | Name of the individual.                              |
+| `contact_email`    | VARCHAR(255)| UNIQUE                  | Email address for communication.                     |
+| `contact_phone`    | VARCHAR(20) |                         | Phone number for communication.                      |
+| `date_of_birth`    | DATE        |                         | Individual's date of birth (for age-related programs).|
+| `gender`           | VARCHAR(50) |                         | Gender of the individual.                            |
+| `current_address`  | TEXT        |                         | Current address/temporary accommodation details.     |
+| `support_worker_id`| INT         | FOREIGN KEY (SupportWorkers) | Links to the assigned support worker.               |
+| `enrollment_date`  | DATE        | NOT NULL                | Date the individual enrolled in the program.         |
+| `status`           | VARCHAR(50) | NOT NULL, DEFAULT 'Active' | Current status (e.g., 'Active', 'Completed', 'Left Program'). |
+| `notes`            | TEXT        |                         | Any relevant notes about the individual's journey.   |
+
+
+A. Available Housing
+------------------------
+
+### 2. `Properties` Table
+*Purpose:* To store details of all available housing units (temporary and permanent).
+*Fields:*
+    * `PropertyID` (INT, Primary Key, Auto-increment)
+    * `AddressLine1` (VARCHAR(255), NOT NULL)
+    * `AddressLine2` (VARCHAR(255))
+    * `City` (VARCHAR(100), NOT NULL)
+    * `Postcode` (VARCHAR(10), NOT NULL)
+    * `PropertyType` (VARCHAR(50), NOT NULL) - e.g., 'Flat', 'House', 'Studio', 'Hostel Room', 'B&B Room'.
+    * `HousingType` (VARCHAR(50), NOT NULL) - 'Temporary', 'Permanent'.
+    * `Bedrooms` (INT)
+    * `Bathrooms` (INT)
+    * `Capacity` (INT) - Maximum number of people the property can accommodate.
+    * `AccessibilityFeatures` (TEXT) - e.g., 'Wheelchair accessible', 'Ground floor', 'Lift'.
+    * `AvailabilityStatus` (VARCHAR(20), NOT NULL) - 'Available', 'Occupied', 'Under Maintenance', 'Allocated'.
+    * `LastAvailableDate` (DATE) - Date property became available.
+    * `ProviderID` (INT, Foreign Key to `Housing_Providers` table) - The organisation providing the property.
+    * `WeeklyCost` (DECIMAL(10, 2)) - Cost of the property per week (for tracking expenditure).
+    * `CouncilTaxBand` (VARCHAR(10))
+    * `EPC_Rating` (VARCHAR(5))
+    * `DateAdded` (DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP)
+    * `LastUpdated` (DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+
+### 3. `Housing_Providers` Table
+*Purpose:* To manage information about organisations that provide housing.
+*Fields:*
+    * `ProviderID` (INT, Primary Key, Auto-increment)
+    * `ProviderName` (VARCHAR(255), NOT NULL)
+    * `ProviderType` (VARCHAR(50)) - e.g., 'Local Authority', 'Housing Association', 'Private Landlord', 'Charity/Shelter'.
+    * `ContactPerson` (VARCHAR(255))
+    * `ContactNumber` (VARCHAR(20))
+    * `EmailAddress` (VARCHAR(255))
+    * `Address` (TEXT)
+
+### 4. `Placements` Table
+*Purpose:* To record details of a homeless person's housing placements (temporary or permanent).
+*Fields:*
+    * `PlacementID` (INT, Primary Key, Auto-increment)
+    * `PersonID` (INT, Foreign Key to `Homeless_Persons` table, NOT NULL)
+    * `PropertyID` (INT, Foreign Key to `Properties` table, NOT NULL)
+    * `PlacementStartDate` (DATETIME, NOT NULL)
+    * `PlacementEndDate` (DATETIME) - Null if current.
+    * `PlacementType` (VARCHAR(50), NOT NULL) - 'Temporary', 'Permanent'.
+    * `ReasonForPlacement` (TEXT)
+    * `OutcomeNotes` (TEXT) - Notes on the outcome when the placement ends.
+    * `SupportPlanID` (INT, Foreign Key to `Support_Plans` table) - Link to the specific support plan for this placement.
+    * `DateAdded` (DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP)
+    * `LastUpdated` (DATETIME, NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+
+
+B. Microcourses 
+----------------
+### **5. `Skills` Table**
+
+A central repository of all job-focused skills.
+
+| Column Name | Data Type   | Constraints             | Description                                          |
+| :---------- | :---------- | :---------------------- | :--------------------------------------------------- |
+| `skill_id`  | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each skill.                    |
+| `skill_name`| VARCHAR(255)| NOT NULL, UNIQUE        | Name of the skill (e.g., 'Basic IT', 'Customer Service', 'Construction Safety'). |
+| `skill_category`| VARCHAR(100)|                     | Category of the skill (e.g., 'Digital', 'Soft Skills', 'Trade'). |
+| `description` | TEXT        |                         | Detailed description of the skill.                   |
+
+### **6. `Microcourses` Table**
+
+Details about available microcourses.
+
+| Column Name         | Data Type   | Constraints             | Description                                          |
+| :------------------ | :---------- | :---------------------- | :--------------------------------------------------- |
+| `course_id`         | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each microcourse.              |
+| `course_title`      | VARCHAR(255)| NOT NULL                | Full title of the microcourse.                       |
+| `description`       | TEXT        | NOT NULL                | Detailed description of the course content and learning outcomes. |
+| `duration_hours`    | INT         |                         | Approximate duration of the course in hours.         |
+| `learning_format`   | VARCHAR(100)|                         | e.g., 'Online Self-Paced', 'Online Live', 'In-Person'. |
+| `cost`              | DECIMAL(10,2)|                         | Cost of the course, if any (0 if free).             |
+| `provider_id`       | INT         | FOREIGN KEY (Providers) | Links to the training provider.                      |
+| `start_date`        | DATE        |                         | Start date for cohort-based courses (can be NULL for self-paced). |
+| `end_date`          | DATE        |                         | End date for cohort-based courses.                  |
+| `is_active`         | BOOLEAN     | NOT NULL, DEFAULT TRUE  | Indicates if the course is currently available.      |
+
+### **7. `CourseSkills` Table (Junction Table)**
+
+Maps skills covered by each microcourse. A course can teach multiple skills, and a skill can be taught by multiple courses.
+
+| Column Name | Data Type | Constraints             | Description                                          |
+| :---------- | :-------- | :---------------------- | :--------------------------------------------------- |
+| `course_id` | INT       | PRIMARY KEY, FOREIGN KEY (Microcourses) | References `Microcourses.course_id`.       |
+| `skill_id`  | INT       | PRIMARY KEY, FOREIGN KEY (Skills)       | References `Skills.skill_id`.              |
+
+### **8. `Providers` Table**
+
+Information about training organizations or course providers.
+
+| Column Name        | Data Type   | Constraints             | Description                                          |
+| :----------------- | :---------- | :---------------------- | :--------------------------------------------------- |
+| `provider_id`      | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each provider.                 |
+| `provider_name`    | VARCHAR(255)| NOT NULL, UNIQUE        | Name of the training provider.                       |
+| `contact_person`   | VARCHAR(255)|                         | Main contact at the provider.                        |
+| `contact_email`    | VARCHAR(255)|                         | Email of the contact person.                         |
+| `contact_phone`    | VARCHAR(20) |                         | Phone of the contact person.                         |
+| `website`          | VARCHAR(255)|                         | Provider's website.                                  |
+| `address`          | TEXT        |                         | Provider's address.                                  |
+| `agreement_date`   | DATE        |                         | Date agreement was established with the provider.    |
+
+### **9. `Enrollments` Table**
+
+Tracks individuals' enrollment in microcourses.
+
+| Column Name      | Data Type   | Constraints             | Description                                          |
+| :--------------- | :---------- | :---------------------- | :--------------------------------------------------- |
+| `enrollment_id`  | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each enrollment.               |
+| `individual_id`  | INT         | NOT NULL, FOREIGN KEY (Individuals) | References `Individuals.individual_id`.          |
+| `course_id`      | INT         | NOT NULL, FOREIGN KEY (Microcourses) | References `Microcourses.course_id`.             |
+| `enrollment_date`| DATE        | NOT NULL                | Date the individual enrolled in the course.          |
+| `completion_date`| DATE        |                         | Date the individual completed the course (NULL if in progress). |
+| `status`         | VARCHAR(50) | NOT NULL, DEFAULT 'In Progress' | 'In Progress', 'Completed', 'Dropped Out', 'Certified'. |
+| `certificate_url`| VARCHAR(255)|                         | URL to the completion certificate, if applicable.    |
+| `grade`          | VARCHAR(50) |                         | Grade or assessment outcome (if applicable).         |
+
+
+### **10. `Employers` Table** 
+
+Information about potential employers offering placement opportunities.
+
+| Column Name       | Data Type   | Constraints             | Description                                          |
+| :---------------- | :---------- | :---------------------- | :--------------------------------------------------- |
+| `employer_id`     | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each employer.                 |
+| `company_name`    | VARCHAR(255)| NOT NULL, UNIQUE        | Name of the employing company.                       |
+| `industry`        | VARCHAR(100)|                         | Industry sector of the company.                      |
+| `contact_person`  | VARCHAR(255)|                         | Main contact at the company for placements.          |
+| `contact_email`   | VARCHAR(255)|                         | Email of the contact person.                         |
+| `contact_phone`   | VARCHAR(20) |                         | Phone of the contact person.                         |
+| `website`         | VARCHAR(255)|                         | Company website.                                     |
+| `address`         | TEXT        |                         | Company address.                                     |
+| `agreement_date`  | DATE        |                         | Date agreement was established for placements.       |
+
+### **11. `PlacementOpportunities` Table** [includes part-time work while upskilling]
+
+Details about available job or work experience placement opportunities.
+
+| Column Name       | Data Type   | Constraints             | Description                                          |
+| :---------------- | :---------- | :---------------------- | :--------------------------------------------------- |
+| `placement_id`    | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each placement.                |
+| `job_title`       | VARCHAR(255)| NOT NULL                | Title of the job or placement role.                  |
+| `description`     | TEXT        | NOT NULL                | Detailed job description and responsibilities.       |
+| `employer_id`     | INT         | NOT NULL, FOREIGN KEY (Employers) | References `Employers.employer_id`.            |
+| `location`        | VARCHAR(255)|                         | Geographic location of the placement.                |
+| `employment_type` | VARCHAR(100)|                         | e.g., 'Full-time', 'Part-time', 'Apprenticeship', 'Work Experience'. |
+| `start_date`      | DATE        |                         | Expected start date of the placement.                |
+| `duration_months` | INT         |                         | Expected duration of the placement in months.        |
+| `salary_wage`     | DECIMAL(10,2)|                         | Hourly wage or annual salary (can be 0 for voluntary). |
+| `is_active`       | BOOLEAN     | NOT NULL, DEFAULT TRUE  | Indicates if the placement is currently available.   |
+| `date_posted`     | DATE        | NOT NULL                | Date the opportunity was posted.                     |
+| `application_deadline`| DATE      |                         | Deadline for applications.                           |
+
+### **12. `PlacementSkills` Table (Junction Table)**
+
+Maps skills required for each placement opportunity.
+
+| Column Name    | Data Type | Constraints             | Description                                          |
+| :------------- | :-------- | :---------------------- | :--------------------------------------------------- |
+| `placement_id` | INT       | PRIMARY KEY, FOREIGN KEY (PlacementOpportunities) | References `PlacementOpportunities.placement_id`. |
+| `skill_id`     | INT       | PRIMARY KEY, FOREIGN KEY (Skills) | References `Skills.skill_id`.              |
+| `is_essential` | BOOLEAN   | NOT NULL, DEFAULT TRUE  | Indicates if the skill is essential or desirable.    |
+
+### **13. `Applications` Table**
+
+Tracks individuals' applications to placement opportunities.
+
+| Column Name      | Data Type   | Constraints             | Description                                          |
+| :--------------- | :---------- | :---------------------- | :--------------------------------------------------- |
+| `application_id` | INT         | PRIMARY KEY, AUTO_INCREMENT | Unique identifier for each application.              |
+| `individual_id`  | INT         | NOT NULL, FOREIGN KEY (Individuals) | References `Individuals.individual_id`.          |
+| `placement_id`   | INT         | NOT NULL, FOREIGN KEY (PlacementOpportunities) | References `PlacementOpportunities.placement_id`.|
+| `application_date`| DATE        | NOT NULL                | Date the application was submitted.                  |
+| `status`         | VARCHAR(50) | NOT NULL, DEFAULT 'Submitted' | 'Submitted', 'Interview Scheduled', 'Offered', 'Accepted', 'Rejected', 'Withdrawn'. |
+| `interview_date` | DATETIME    |                         | Date and time of interview, if applicable.           |
+| `outcome_date`   | DATE        |                         | Date the final outcome was determined.               |
+| `notes`          | TEXT        |                         | Any relevant notes about the application process.    |
+
