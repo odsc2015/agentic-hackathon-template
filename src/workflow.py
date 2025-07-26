@@ -7,9 +7,8 @@ from google.genai.types import Content, Part
 import uuid
 import os
 USER_ID = "cognitive_user_001"
-os.environ['GOOGLE_AI_API_KEY'] = "AIzaSyCmTlPLaTfbJJzHmBzgf1m361wo8MUgO3s"
-os.environ['GEMINI_API_KEY'] = "AIzaSyCmTlPLaTfbJJzHmBzgf1m361wo8MUgO3s"
-os.environ['GOOGLE_API_KEY'] = "AIzaSyCmTlPLaTfbJJzHmBzgf1m361wo8MUgO3s"
+api_key = os.getenv("GOOGLE_API_KEY")
+os.environ['GOOGLE_API_KEY'] = api_keyx
 
 async def run_agent_query(agent, query, session, user_id, session_service=None):
     runner = Runner(agent=agent, session_service=session_service, app_name=agent.name)

@@ -2,7 +2,7 @@ import sqlite3
 import os
 from google import genai
 from google.genai import types
-
+api_key = os.getenv("GOOGLE_API_KEY")
 class MemoryManager:
     def __init__(self, db_path="kiran_memory.db"):
         self.db_path = db_path
@@ -13,7 +13,7 @@ class MemoryManager:
         )
         self.conn.commit()
         # Initialize a Gemini client here as well for convenience (so executor can use memory.gemini_client)
-        api_key ="AIzaSyCmTlPLaTfbJJzHmBzgf1m361wo8MUgO3s"
+        
         if api_key is None:
             raise RuntimeError("Gemini API key not set in environment.")
         self.gemini_client = genai.Client(api_key=api_key)

@@ -10,9 +10,11 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+
 # Initialize Gemini client (API key is expected in environment)
-api_key = "AIzaSyCmTlPLaTfbJJzHmBzgf1m361wo8MUgO3s"
-aallpi_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("GEMINI_API_KEY")
+if api_key is None:
+    api_key = os.getenv("GOOGLE_API_KEY")
 print(aallpi_key)
 os.environ['GOOGLE_AI_API_KEY'] = api_key
 if api_key is None:
