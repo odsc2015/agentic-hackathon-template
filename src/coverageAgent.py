@@ -32,10 +32,8 @@ TRADING_PARTNER_SERVICE_MAP = {
 # Sample insurance data structure
 INSURANCE_DATA = {
     "tradingPartnerServiceId": "62308",
-    # "lat": 40.71427,
-    # "lng": -74.00597,
-    "lat": 42.35843000,
-    "lng": -71.05977000,
+    "lat": 40.71427,
+    "lng": -74.00597,
     "subscriber": {
         "entityIdentifier": "Insured or Subscriber",
     },
@@ -63,9 +61,9 @@ INSURANCE_DATA = {
         "groupDescription": "ACME, Inc."
     },
     "planDateInformation": {
-        "planBegin": "20240101",
-        "planEnd": "20241231", 
-        "eligibilityBegin": "20240101"
+        "planBegin": "20250101",
+        "planEnd": "20251231", 
+        "eligibilityBegin": "20250101"
     },
     "planStatus": [
         {

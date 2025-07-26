@@ -1,4 +1,19 @@
-google-generativeai
-aiohttp
-asyncio
-google-adk
+# Core dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# Google dependencies
+google-generativeai==0.3.2
+google-adk-agents>=0.1.0
+google-adk-tools>=0.1.0
+google-adk-sessions>=0.1.0
+google-adk-runners>=0.1.0
+
+# Other dependencies
+python-dotenv==1.0.0
+requests==2.31.0
+asyncio-mqtt==0.13.0
+
+# Optional: for better performance
+gunicorn==21.2.0

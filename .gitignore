@@ -2,3 +2,5 @@
 .venv
 .vscode/
 .venv_py310
+src/__pycache__/
+src/.env
