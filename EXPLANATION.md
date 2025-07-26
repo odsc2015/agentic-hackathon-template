@@ -54,7 +54,9 @@ GOOGLE_GENAI_MODEL="gemini-2.0-flash"
 ```
 adk web
 ```
+2. Select ```learnLite``` from the dropdown on the left and enter ```google agent development kit (or anything of your interest), Beginner``` in the chat-box.
 
-Be honest about edge cases or performance bottlenecks:
-- Handling of ambiguous user inputs  
+3. The course_content_creator and instructor will work together to conduct a class. You are then prompted to take a small quiz. The answers should be filled in using your Terminal.
+
+4. Once all the questions are answered, the loop stores your response and triggers the evaluation_agent which provides a score and a review.  
 
