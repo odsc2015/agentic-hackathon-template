@@ -1,31 +1,53 @@
 """
 FastAPI web server for Insurance Hospital Agent
-Suitable for Google Cloud Run deployment
+Integrated agent functionality without external runner.py dependency
 """
 
 import os
 import asyncio
 import json
+import warnings
+import logging
 from typing import Dict, List, Any, Optional
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 import uvicorn
 
-# Import your agent modules
+# Google ADK imports
+from google.adk.agents import Agent
+from google.adk.sessions import InMemorySessionService
+from google.adk.runners import Runner
+from google.genai import types
+from google.adk.tools import google_search
+
+# Import from coverageAgent
 from coverageAgent import (
     INSURANCE_DATA, 
     TRADING_PARTNER_SERVICE_MAP,
     check_insurance_validity,
-    get_hospitals_json_format
+    json_hospital_agent
 )
-from runner import run_single_query, get_insurance_provider_from_data
+
+# Configure logging
+warnings.filterwarnings("ignore")
+logging.basicConfig(level=logging.ERROR)
 
 # FastAPI app
 app = FastAPI(
     title="Insurance Hospital Agent API",
-    description="API for finding hospitals covered by insurance",
+    description="API for finding hospitals covered by insurance using integrated agent",
     version="1.0.0"
 )
+
+# Session Management
+session_service = InMemorySessionService()
+APP_NAME = "insurance_coverage_app"
+USER_ID = "user_1" 
+SESSION_ID = "session_001"
+
+# Global runner instance
+global_runner = None
+global_session_created = False
 
 # Pydantic models for request/response
 class InsuranceData(BaseModel):
@@ -39,9 +61,7 @@ class InsuranceData(BaseModel):
     planStatus: Optional[List[Dict]] = None
     benefitsInformation: Optional[List[Dict]] = None
 
-class HospitalSearchRequest(BaseModel):
-    query: str = "Find hospitals covered by my insurance"
-    insurance_data: Optional[InsuranceData] = None
+# Removed HospitalSearchRequest class since we're accepting InsuranceData directly
 
 class HospitalResponse(BaseModel):
     status: str
@@ -58,10 +78,113 @@ class ValidationResponse(BaseModel):
     error: Optional[str] = None
     plan_info: Dict
 
+def get_insurance_provider_from_data(insurance_data: Dict) -> str:
+    """Extract insurance provider name from insurance data."""
+    trading_partner_id = insurance_data.get("tradingPartnerServiceId", "")
+    
+    for provider, service_id in TRADING_PARTNER_SERVICE_MAP.items():
+        if service_id == trading_partner_id:
+            return provider
+    
+    return insurance_data.get("payer", {}).get("name", "Unknown")
+
+async def get_or_create_runner():
+    """Get or create the global runner instance"""
+    global global_runner, global_session_created
+    
+    if global_runner is None:
+        # Create session if it doesn't exist
+        if not global_session_created:
+            try:
+                session = await session_service.create_session(
+                    app_name=APP_NAME,
+                    user_id=USER_ID,
+                    session_id=SESSION_ID
+                )
+                global_session_created = True
+                print(f"Session created: App='{APP_NAME}', User='{USER_ID}', Session='{SESSION_ID}'")
+            except Exception as e:
+                print(f"Session creation issue: {e}")
+        
+        # Create runner
+        global_runner = Runner(
+            agent=json_hospital_agent,
+            app_name=APP_NAME,
+            session_service=session_service
+        )
+        print(f"Runner created for agent '{global_runner.agent.name}'.")
+    
+    return global_runner
+
+async def call_agent_with_insurance_data(query: str, runner, user_id, session_id, insurance_data=None):
+    """Enhanced function that passes insurance data to the agent."""
+    print(f"\n>>> User Query: {query}")
+    
+    if insurance_data is None:
+        insurance_data = INSURANCE_DATA
+    
+    # Extract relevant information
+    insurance_provider = get_insurance_provider_from_data(insurance_data)
+    lat = insurance_data.get("lat")
+    lng = insurance_data.get("lng")
+    
+    # Create enhanced query with insurance context
+    enhanced_query = f"""
+    INSURANCE DATA CONTEXT:
+    - Insurance Provider: {insurance_provider}
+    - Location: {lat}, {lng}
+    - Trading Partner ID: {insurance_data.get('tradingPartnerServiceId')}
+    
+    USER REQUEST: {query}
+    
+    Please search for hospitals near the coordinates {lat},{lng} that accept {insurance_provider} insurance.
+    Return only a JSON array with hospital data as specified in your instructions.
+    """
+    
+    # Prepare the message
+    content = types.Content(role='user', parts=[types.Part(text=enhanced_query)])
+    
+    final_response_text = "Agent did not produce a final response."
+    
+    # Run the agent
+    async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=content):
+        if event.is_final_response():
+            if event.content and event.content.parts:
+                final_response_text = event.content.parts[0].text
+            elif event.actions and event.actions.escalate:
+                final_response_text = f"Agent escalated: {event.error_message or 'No specific message.'}"
+            break
+    
+    print(f"<<< Agent Response: {final_response_text}")
+    
+    # Try to parse and validate the JSON response
+    try:
+        # Clean and extract JSON
+        cleaned_response = final_response_text.strip()
+        if cleaned_response.startswith('```json'):
+            cleaned_response = cleaned_response.replace('```json', '').replace('```', '').strip()
+        
+        start_bracket = cleaned_response.find('[')
+        end_bracket = cleaned_response.rfind(']')
+        
+        if start_bracket != -1 and end_bracket != -1:
+            json_str = cleaned_response[start_bracket:end_bracket + 1]
+            hospitals = json.loads(json_str)
+            print(f"✅ Successfully parsed {len(hospitals)} hospitals from JSON response")
+            return hospitals
+        else:
+            print("❌ No valid JSON array found in response")
+            return []
+            
+    except json.JSONDecodeError as e:
+        print(f"❌ JSON parsing error: {e}")
+        return []
+
+
 # Health check endpoint
 @app.get("/health")
 async def health_check():
-    """Health check endpoint for Cloud Run"""
+    """Health check endpoint"""
     return {"status": "healthy", "service": "insurance-hospital-agent"}
 
 # Root endpoint
@@ -71,155 +194,54 @@ async def root():
     return {
         "service": "Insurance Hospital Agent API",
         "version": "1.0.0",
+        "description": "Direct agent integration for hospital search",
         "endpoints": {
             "health": "/health",
-            "validate": "/validate",
-            "search": "/search",
-            "search_default": "/search/default"
+            "search": "/search"
         }
     }
 
-# Insurance validation endpoint
-@app.post("/validate", response_model=ValidationResponse)
-async def validate_insurance(insurance_data: Optional[InsuranceData] = None):
-    """Validate insurance coverage"""
-    try:
-        # Use provided data or default
-        data_dict = insurance_data.dict() if insurance_data else INSURANCE_DATA
-        
-        # Validate insurance
-        validation_result = check_insurance_validity(data_dict)
-        
-        return ValidationResponse(
-            valid=validation_result["valid"],
-            insurance_provider=validation_result["insurance_provider"],
-            message=validation_result.get("message"),
-            error=validation_result.get("error"),
-            plan_info=validation_result["plan_info"]
-        )
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Validation error: {str(e)}")
-
-# Hospital search endpoint
 @app.post("/search", response_model=HospitalResponse)
-async def search_hospitals(request: HospitalSearchRequest):
-    """Search for hospitals using the agent"""
+async def search_hospitals(insurance_data: InsuranceData):
+    """Search for hospitals using the agent directly - accepts insurance data directly"""
     try:
-        # Use provided insurance data or default
-        insurance_data = request.insurance_data.dict() if request.insurance_data else INSURANCE_DATA
+        # Convert Pydantic model to dict
+        insurance_dict = insurance_data.dict()
         
         # Validate insurance first
-        validation_result = check_insurance_validity(insurance_data)
+        validation_result = check_insurance_validity(insurance_dict)
         if not validation_result["valid"]:
             raise HTTPException(
                 status_code=400, 
                 detail=f"Insurance validation failed: {validation_result['error']}"
             )
         
-        # Get hospitals using the more comprehensive function
-        result = await get_hospitals_json_format(insurance_data)
-        
-        if result["status"] == "error":
-            raise HTTPException(status_code=500, detail=result["error_message"])
-        
-        return HospitalResponse(
-            status="success",
-            message=f"Found {result['total_found']} hospitals",
-            insurance_provider=result["insurance_provider"],
-            location=result["location"],
-            hospitals=result["hospitals"],
-            total_found=result["total_found"]
-        )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
-
-# Simple search endpoint with default data
-@app.get("/search/default", response_model=HospitalResponse)
-async def search_hospitals_default(query: str = "Find hospitals covered by my insurance"):
-    """Search for hospitals using default insurance data"""
-    try:
-        # Validate default insurance
-        validation_result = check_insurance_validity()
-        if not validation_result["valid"]:
-            raise HTTPException(
-                status_code=400, 
-                detail=f"Default insurance validation failed: {validation_result['error']}"
-            )
-        
-        # Get hospitals
-        result = await get_hospitals_json_format()
-        
-        if result["status"] == "error":
-            raise HTTPException(status_code=500, detail=result["error_message"])
-        
-        return HospitalResponse(
-            status="success",
-            message=f"Found {result['total_found']} hospitals",
-            insurance_provider=result["insurance_provider"],
-            location=result["location"],
-            hospitals=result["hospitals"],
-            total_found=result["total_found"]
-        )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
-
-# Alternative endpoint using the runner approach
-@app.post("/search/runner")
-async def search_hospitals_runner(request: HospitalSearchRequest):
-    """Search for hospitals using the runner approach"""
-    try:
-        # Run the single query function
-        hospitals = await run_single_query(request.query)
+        # Call the agent with insurance data (no query parameter needed)
+        hospitals = await call_agent_with_insurance_data(insurance_dict)
         
         # Get insurance provider for response
-        insurance_data = request.insurance_data.dict() if request.insurance_data else INSURANCE_DATA
-        insurance_provider = get_insurance_provider_from_data(insurance_data)
+        insurance_provider = get_insurance_provider_from_data(insurance_dict)
         
-        return {
-            "status": "success",
-            "message": f"Found {len(hospitals)} hospitals",
-            "insurance_provider": insurance_provider,
-            "location": {
-                "lat": insurance_data.get("lat"),
-                "lng": insurance_data.get("lng")
+        return HospitalResponse(
+            status="success",
+            message=f"Found {len(hospitals)} hospitals using agent",
+            insurance_provider=insurance_provider,
+            location={
+                "lat": insurance_dict.get("lat"),
+                "lng": insurance_dict.get("lng")
             },
-            "hospitals": hospitals,
-            "total_found": len(hospitals)
-        }
+            hospitals=hospitals,
+            total_found=len(hospitals)
+        )
         
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Runner search error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
 
-# Get current insurance info
-@app.get("/insurance/current")
-async def get_current_insurance():
-    """Get current insurance information"""
-    try:
-        insurance_provider = get_insurance_provider_from_data(INSURANCE_DATA)
-        validation_result = check_insurance_validity()
-        
-        return {
-            "insurance_provider": insurance_provider,
-            "location": {
-                "lat": INSURANCE_DATA.get("lat"),
-                "lng": INSURANCE_DATA.get("lng")
-            },
-            "trading_partner_id": INSURANCE_DATA.get("tradingPartnerServiceId"),
-            "validation": validation_result
-        }
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error getting insurance info: {str(e)}")
 
 if __name__ == "__main__":
-    # Get port from environment variable (Cloud Run provides this)
+    # Get port from environment variable
     port = int(os.environ.get("PORT", 8080))
     
     # Run the FastAPI app
@@ -227,5 +249,6 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=port,
-        log_level="info"
+        log_level="info",
+        reload=True  # Enable auto-reload during development
     )
